@@ -1,6 +1,7 @@
 .htmltitle{
     color:gold;
 }
-.aboutlink{
-    color:red;
+.htmltitle-link{
+    text-decoration:none;
+    color:gold;
 }
