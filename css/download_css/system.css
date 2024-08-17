@@ -6,7 +6,7 @@ a{
 }
 .no_this_file{
     pointer-events:none;
-    cursor:not-allowed;
+    cursor:no-drop;
 }
 .no_this_file:hover{
     color:grey;
