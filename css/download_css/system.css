@@ -4,8 +4,12 @@
 a{
     color:gold
 }
+.no_this_file{
+    pointer-events:none;
+    cursor:not-allowed;
+}
 .no_this_file:hover{
-    color:grey
+    color:grey;
 }
 h1{
     color:grey
