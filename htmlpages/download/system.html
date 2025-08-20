@@ -2,53 +2,443 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>系统类</title>
-    <link rel="stylesheet" href="../../css/download_css/system.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统镜像下载 - MSDN原版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #243949, #517fa4);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .source-link {
+            color: #ffd43b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .source-link:hover {
+            color: #ffca28;
+            text-decoration: underline;
+            transform: translateY(-2px);
+        }
+        
+        .download-content {
+            padding: 30px;
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            color: #517fa4;
+        }
+        
+        .category-title {
+            font-size: 1.8rem;
+            color: #243949;
+        }
+        
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .download-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid #517fa4;
+        }
+        
+        .download-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .download-card h4 {
+            font-size: 1.3rem;
+            color: #243949;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .os-icon {
+            font-size: 1.5rem;
+        }
+        
+        .download-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .download-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #495057;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .download-link:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .link-icon {
+            color: #517fa4;
+            font-size: 1.2rem;
+        }
+        
+        .disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .disabled:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: #243949;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #517fa4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(36, 57, 73, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .download-content {
+                padding: 20px;
+            }
+            
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>系统镜像--MSDN原版</h1>
-    <h2>镜像部分来源于<a class="link_msdn" href="https://msdn.itellyou.cn">MSDN我告诉你</a></h2>
-    <h3>Windows 普通版</h3>
-    <hr>
-    <a href="https://www.123pan.com/s/Q9Bqjv-jRoQH.html">Windows 11 23H2 下载链接1</a>
-    <a href="https://127.0.0.1">下载链接2</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-rDoQH.html">Windows 10 22H2</a>
-        <a href="https://127.0.0.1">下载链接2</a>
-    <hr>
-    <a href="https://www.123pan.com/s/Q9Bqjv-droQH.html">Windows 8.1</a>
-        <a href="https://127.0.0.1">下载链接2</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-lRoQH.html">Windows 7 旗舰版</a>
-        <a href="https://127.0.0.1">下载链接2</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-bRoQH.html">Windows XP</a>
-        <a href="https://127.0.0.1">下载链接2</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-cRoQH.html">Windows Vista 旗舰版</a>
-    <a href="https://127.0.0.1">下载链接2</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-tRoQH.html">Windows 2000 Pro</a>
-    <a href="https://127.0.0.1">下载链接2</a>
-    <h3>Windows Server（服务器）版</h3>
-    <a  style="cursor: not-allowed;" href="">Windows Server 2025</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-ReoQH">Windows Server 2022</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-jDoQH.html">Windows Server 2019</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-VDoQH.html">Windows Server 2016</a>
-    <hr>
-    <a href="https://www.123pan.com/s/Q9Bqjv-3roQH.html">Windows Server 2012</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-0DoQH.html">Windows Server 2008</a>
-    <br>
-    <a href="https://www.123pan.com/s/Q9Bqjv-eRoQH.html">Windows Server 2003 GUI disk1 和 disk2</a>
-    <hr>
-    <h3>Windows 精简版</h3>
-    <hr>
-    <a href="https://www.123pan.com/s/Q9Bqjv-dAmQH">Tiny 11 (Windows 11 精简)</a>
-    <hr>
-    <b><a href="../downloads">返回</a></b>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-compact-disc"></i> 系统镜像下载</h1>
+                <p class="subtitle">MSDN原版系统镜像 - 纯净无修改</p>
+                <p>镜像部分来源于 <a href="https://msdn.itellyou.cn" class="source-link" target="_blank">MSDN我告诉你</a></p>
+            </div>
+        </header>
+        
+        <div class="download-content">
+            <!-- Windows 普通版 -->
+            <div class="category">
+                <div class="category-header">
+                    <i class="fas fa-desktop category-icon"></i>
+                    <h2 class="category-title">Windows 普通版</h2>
+                </div>
+                
+                <div class="download-grid">
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows 11 23H2</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-jRoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows 10 22H2</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-rDoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows 8.1</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-droQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows 7 旗舰版</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-lRoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows XP</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-bRoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows Vista 旗舰版</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-cRoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Windows 2000 Pro</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-tRoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接1 (123云盘)
+                            </a>
+                            <a href="https://127.0.0.1" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接2 (备用)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Windows Server版 -->
+            <div class="category">
+                <div class="category-header">
+                    <i class="fas fa-server category-icon"></i>
+                    <h2 class="category-title">Windows Server（服务器）版</h2>
+                </div>
+                
+                <div class="download-grid">
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2025</h4>
+                        <div class="download-links">
+                            <a class="download-link disabled">
+                                <i class="fas fa-clock link-icon"></i> 即将提供
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2022</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-ReoQH" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2019</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-jDoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2016</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-VDoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2012</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-3roQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2008</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-0DoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> 下载链接 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-card">
+                        <h4><i class="fas fa-server os-icon"></i> Windows Server 2003</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-eRoQH.html" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> GUI disk1 和 disk2 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Windows 精简版 -->
+            <div class="category">
+                <div class="category-header">
+                    <i class="fas fa-compress-alt category-icon"></i>
+                    <h2 class="category-title">Windows 精简版</h2>
+                </div>
+                
+                <div class="download-grid">
+                    <div class="download-card">
+                        <h4><i class="fab fa-windows os-icon"></i> Tiny 11</h4>
+                        <div class="download-links">
+                            <a href="https://www.123pan.com/s/Q9Bqjv-dAmQH" class="download-link" target="_blank">
+                                <i class="fas fa-download link-icon"></i> Windows 11 精简版 (123云盘)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="../downloads" class="back-btn">
+                <i class="fas fa-arrow-left"></i> 返回下载中心
+            </a>
+        </div>
+        
+        <footer>
+            <p>© 2023 系统镜像下载中心 | 所有资源均来源于网络，仅供学习交流使用</p>
+        </footer>
+    </div>
+
+    <script>
+        // 添加简单的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.download-card');
+            
+            cards.forEach((card, index) => {
+                // 添加延迟显示效果
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + index * 100);
+            });
+        });
+    </script>
 </body>
 </html>

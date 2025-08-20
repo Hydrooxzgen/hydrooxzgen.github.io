@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面未更新 - 下载中心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .error-header {
+            background: linear-gradient(to right, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 40px 20px;
+        }
+        
+        .error-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .error-content {
+            padding: 40px;
+        }
+        
+        .error-message {
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .suggestions {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .suggestions h3 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .suggestion-list {
+            list-style: none;
+        }
+        
+        .suggestion-list li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .suggestion-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .suggestion-list i {
+            color: #ff6b6b;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: #4dabf7;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(77, 171, 247, 0.3);
+        }
+        
+        .btn-primary {
+            background: #4dabf7;
+        }
+        
+        .btn-primary:hover {
+            background: #339af0;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(77, 171, 247, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #ff6b6b;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: #fa5252;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #4dabf7;
+            color: #4dabf7;
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: #4dabf7;
+            color: white;
+        }
+        
+        .contact-info {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .error-content {
+                padding: 25px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-header">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h1>抱歉，此页面尚未更新</h1>
+        </div>
+        
+        <div class="error-content">
+            <p class="error-message">
+                您正在访问的页面目前还没有内容更新。我们的开发团队正在努力完善网站内容，请您稍后再来查看。
+            </p>
+            
+            <div class="suggestions">
+                <h3><i class="fas fa-lightbulb"></i> 您可以尝试：</h3>
+                <ul class="suggestion-list">
+                    <li>
+                        <i class="fas fa-arrow-left"></i>
+                        <span>返回下载中心查看其他可用资源</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-home"></i>
+                        <span>访问网站主页浏览更多内容</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>稍后再回来查看此页面是否已更新</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <span>联系我们询问此页面的更新计划</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="../downloads" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> 返回下载中心
+                </a>
+                <a href="../oldhome" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> 返回主页
+                </a>
+                <a href="mailto:admin@example.com" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> 联系管理员
+                </a>
+            </div>
+            
+            <div class="contact-info">
+                <p>如果您认为这是一个错误，或者需要立即帮助，请通过上述方式联系我们</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加简单的页面加载效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
+</body>
+</html>

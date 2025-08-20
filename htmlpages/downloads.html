@@ -2,18 +2,278 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>下载中心</title>
-    <link rel="stylesheet" href="../css/downloads.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            margin: 20px auto;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: #3a7bd5;
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            background: #2c65b8;
+        }
+        
+        .download-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px;
+            justify-content: center;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-header {
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .system-header {
+            background: linear-gradient(to right, #ff5e62, #ff9966);
+        }
+        
+        .tools-header {
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+        }
+        
+        .category-content {
+            padding: 25px;
+        }
+        
+        .category-content p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #3a7bd5;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(58, 123, 213, 0.3);
+        }
+        
+        .btn:hover {
+            background: #2c65b8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(58, 123, 213, 0.4);
+        }
+        
+        .system-btn {
+            background: #ff5e62;
+            box-shadow: 0 4px 10px rgba(255, 94, 98, 0.3);
+        }
+        
+        .system-btn:hover {
+            background: #e05559;
+            box-shadow: 0 6px 15px rgba(255, 94, 98, 0.4);
+        }
+        
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto 40px;
+            padding: 12px 30px;
+            background: #555;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .download-categories {
+                padding: 15px;
+            }
+            
+            .category-card {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1 class="htmltitle">下载中心</h1>
-    <hr>
-    <h2 class="system_h2">系统类（镜像）</h2>
-    <a href="./download/system">点我跳转</a>
-    <hr>
-    <h2 class="tools_h2">自制小工具</h2>
-    <a href="./download/tools">点我跳转</a>
-    <hr>
-    <a href="../oldhome">返回</a>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-download"></i> 下载中心</h1>
+                <p class="subtitle">获取您需要的系统镜像和实用工具</p>
+                
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="搜索下载资源...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="download-categories">
+            <div class="category-card">
+                <div class="category-header system-header">
+                    <i class="fas fa-desktop category-icon"></i>
+                    <h2>系统类（镜像）</h2>
+                </div>
+                <div class="category-content">
+                    <p>这里提供各种操作系统镜像下载，包括Windows、Linux发行版及其他专业系统。所有镜像均经过安全检测，确保无病毒无后门。</p>
+                    <a href="./download/system" class="btn system-btn">
+                        <i class="fas fa-arrow-right"></i> 浏览系统镜像
+                    </a>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-header tools-header">
+                    <i class="fas fa-tools category-icon"></i>
+                    <h2>自制小工具</h2>
+                </div>
+                <div class="category-content">
+                    <p>这里收集了我个人开发的各种实用小工具，包括系统优化、生产力工具、开发辅助等。所有工具均提供详细使用说明。</p>
+                    <a href="./download/tools" class="btn">
+                        <i class="fas fa-arrow-right"></i> 浏览工具集合
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <a href="../oldhome" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 返回主页
+        </a>
+        
+        <footer>
+            <p>© 2023 下载中心 | 所有资源仅供学习交流使用</p>
+        </footer>
+    </div>
+
+    <script>
+        // 简单的搜索功能
+        document.querySelector('.search-btn').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-input').value;
+            if (searchTerm.trim() !== '') {
+                alert(`搜索: ${searchTerm}\n此功能仅为演示，实际使用时需连接数据库或搜索API`);
+            }
+        });
+        
+        // 按回车键也可以搜索
+        document.querySelector('.search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.search-btn').click();
+            }
+        });
+    </script>
 </body>
 </html>

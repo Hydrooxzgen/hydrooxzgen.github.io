@@ -2,12 +2,324 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>小工具</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自制小工具下载</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #5c6bc0, #3949ab);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .tools-content {
+            padding: 30px;
+        }
+        
+        .intro {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .intro p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #495057;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 5px solid #5c6bc0;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tool-header {
+            padding: 20px;
+            background: linear-gradient(to right, #f5f7fa, #e8ecef);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: #5c6bc0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .tool-title {
+            font-size: 1.4rem;
+            color: #3949ab;
+            font-weight: 600;
+        }
+        
+        .tool-body {
+            padding: 25px;
+        }
+        
+        .tool-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .tool-features {
+            margin-bottom: 25px;
+        }
+        
+        .tool-features h4 {
+            font-size: 1.1rem;
+            color: #495057;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list i {
+            color: #5c6bc0;
+        }
+        
+        .tool-download {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            background: #5c6bc0;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(92, 107, 192, 0.3);
+            font-size: 1.1rem;
+        }
+        
+        .download-btn:hover {
+            background: #3949ab;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(92, 107, 192, 0.4);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: #5c6bc0;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .back-btn:hover {
+            background: #3949ab;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(57, 73, 171, 0.4);
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tools-content {
+                padding: 20px;
+            }
+            
+            .tool-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>小工具-自制</h1>
-    <a href="https://www.123pan.com/s/Q9Bqjv-iRoQH.html">密码暴力修改器</a>
-    <hr>
-    <a href="../downloads">返回</a>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-tools"></i> 自制小工具</h1>
+                <p class="subtitle">实用工具集合 - 提高效率，简化操作</p>
+            </div>
+        </header>
+        
+        <div class="tools-content">
+            <div class="intro">
+                <p>这里收集了我个人开发的各种实用小工具，所有工具均免费提供下载。每个工具都经过严格测试，确保安全可靠。如果您有任何问题或建议，欢迎反馈！</p>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3 class="tool-title">密码暴力修改器</h3>
+                </div>
+                <div class="tool-body">
+                    <p class="tool-description">一款强大的密码恢复工具，可以帮助您在忘记密码时恢复对系统的访问权限。适用于多种场景和系统环境。</p>
+                    
+                    <div class="tool-features">
+                        <h4><i class="fas fa-star"></i> 主要功能</h4>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> 支持多种加密方式</li>
+                            <li><i class="fas fa-check"></i> 高效恢复算法</li>
+                            <li><i class="fas fa-check"></i> 简单易用的界面</li>
+                            <li><i class="fas fa-check"></i> 多语言支持</li>
+                            <li><i class="fas fa-check"></i> 无需安装，绿色运行</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tool-features">
+                        <h4><i class="fas fa-info-circle"></i> 使用说明</h4>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-cog"></i> 下载后解压即可使用</li>
+                            <li><i class="fas fa-desktop"></i> 兼容Windows 7/8/10/11系统</li>
+                            <li><i class="fas fa-shield-alt"></i> 使用前请关闭杀毒软件（误报）</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tool-download">
+                        <a href="https://www.123pan.com/s/Q9Bqjv-iRoQH.html" class="download-btn" target="_blank">
+                            <i class="fas fa-download"></i> 立即下载 (123云盘)
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <a href="../downloads" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> 返回下载中心
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 自制小工具下载 | 所有工具均为个人开发，仅供学习交流使用</p>
+        </footer>
+    </div>
+
+    <script>
+        // 添加简单的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const toolCard = document.querySelector('.tool-card');
+            
+            // 添加延迟显示效果
+            toolCard.style.opacity = '0';
+            toolCard.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                toolCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                toolCard.style.opacity = '1';
+                toolCard.style.transform = 'translateY(0)';
+            }, 300);
+        });
+    </script>
 </body>
 </html>
