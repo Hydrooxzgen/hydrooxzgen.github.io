@@ -2,17 +2,460 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./css/about.css">
-    <title>about me</title>
-    <script>
-        var SCREEN_WIDTH=window.innerWidth;var SCREEN_HEIGHT=window.innerHeight;var RADIUS=70;var QUANTITY=25;var RADIUS_SCALE=1;var RADIUS_SCALE_MIN=1;var RADIUS_SCALE_MAX=1.5;var canvas;var context;var particles;var mouseX=SCREEN_WIDTH*0.5;var mouseY=SCREEN_HEIGHT*0.5;var mouseIsDown=false;function init(){canvas=document.getElementById('mouseCanvas');if(canvas&&canvas.getContext){context=canvas.getContext('2d');window.addEventListener('mousemove',documentMouseMoveHandler,false);window.addEventListener('mousedown',documentMouseDownHandler,false);window.addEventListener('mouseup',documentMouseUpHandler,false);document.addEventListener('touchstart',documentTouchStartHandler,false);document.addEventListener('touchmove',documentTouchMoveHandler,false);window.addEventListener('resize',windowResizeHandler,false);createParticles();windowResizeHandler();setInterval(loop,1000/60)}}function createParticles(){particles=[];for(var i=0;i<QUANTITY;i++){var particle={size:1,position:{x:mouseX,y:mouseY},offset:{x:0,y:0},shift:{x:mouseX,y:mouseY},speed:0.01+Math.random()*0.04,targetSize:1,fillColor:'#'+(Math.random()*0x904040+0xaaaaaa|0).toString(16),orbit:RADIUS*.5+(RADIUS*.5*Math.random())};particles.push(particle)}}function documentMouseMoveHandler(event){mouseX=event.clientX-(window.innerWidth-SCREEN_WIDTH)*.5;mouseY=event.clientY-(window.innerHeight-SCREEN_HEIGHT)*.5}function documentMouseDownHandler(event){mouseIsDown=true}function documentMouseUpHandler(event){mouseIsDown=false}function documentTouchStartHandler(event){if(event.touches.length==1){event.preventDefault();mouseX=event.touches[0].pageX-(window.innerWidth-SCREEN_WIDTH)*.5;mouseY=event.touches[0].pageY-(window.innerHeight-SCREEN_HEIGHT)*.5}}function documentTouchMoveHandler(event){if(event.touches.length==1){event.preventDefault();mouseX=event.touches[0].pageX-(window.innerWidth-SCREEN_WIDTH)*.5;mouseY=event.touches[0].pageY-(window.innerHeight-SCREEN_HEIGHT)*.5}}function windowResizeHandler(){SCREEN_WIDTH=window.innerWidth;SCREEN_HEIGHT=window.innerHeight;canvas.width=SCREEN_WIDTH;canvas.height=SCREEN_HEIGHT}function loop(){if(mouseIsDown){RADIUS_SCALE+=(RADIUS_SCALE_MAX-RADIUS_SCALE)*(0.02)}else{RADIUS_SCALE-=(RADIUS_SCALE-RADIUS_SCALE_MIN)*(0.02)}RADIUS_SCALE=Math.min(RADIUS_SCALE,RADIUS_SCALE_MAX);context.fillStyle='rgba(0,0,0,0.05)';context.fillRect(0,0,context.canvas.width,context.canvas.height);for(i=0,len=particles.length;i<len;i++){var particle=particles[i];var lp={x:particle.position.x,y:particle.position.y};particle.offset.x+=particle.speed;particle.offset.y+=particle.speed;particle.shift.x+=(mouseX-particle.shift.x)*(particle.speed);particle.shift.y+=(mouseY-particle.shift.y)*(particle.speed);particle.position.x=particle.shift.x+Math.cos(i+particle.offset.x)*(particle.orbit*RADIUS_SCALE);particle.position.y=particle.shift.y+Math.sin(i+particle.offset.y)*(particle.orbit*RADIUS_SCALE);particle.position.x=Math.max(Math.min(particle.position.x,SCREEN_WIDTH),0);particle.position.y=Math.max(Math.min(particle.position.y,SCREEN_HEIGHT),0);particle.size+=(particle.targetSize-particle.size)*0.01;if(Math.round(particle.size)==Math.round(particle.targetSize)){particle.targetSize=1+Math.random()*2}context.beginPath();context.fillStyle=particle.fillColor;context.strokeStyle=particle.fillColor;context.lineWidth=particle.size;context.moveTo(lp.x,lp.y);context.lineTo(particle.position.x,particle.position.y);context.stroke();context.arc(particle.position.x,particle.position.y,particle.size/2,0,Math.PI*2,true);context.fill()}}window.onload=function(){document.getElementById('mouseCanvas').style="width:100%;height:100%;position: fixed;top: 0;left: 0;z-index: -999;";document.getElementsByTagName('html')[0].style='margin:0;width:100%;height:100%;';document.getElementsByTagName('body')[0].style='margin:0;width:100%;height:100%;';init()};</script>
-    </script>
-    <canvas id="mouseCanvas"></canvas>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我 - 个人简介</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        #mouseCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .header {
+            background: linear-gradient(to right, rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8));
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: cover;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .about-link {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .about-link:hover {
+            color: #ffd700;
+            transform: scale(1.05);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .intro {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .detail-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #6a11cb;
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .detail-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6a11cb;
+        }
+        
+        .detail-card p {
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        .contact-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .email {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .email:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.5);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: none;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .social-link:hover {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            transform: translateY(-5px);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+            
+            .details {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1><a style="cursor: default" class="about-link" href="https://github.com/TanWeibo">关于</a></h1>
-    <p>Allen developed.</p>color: #fff" class="abo
-    <p style="color: white"><b>我的邮箱：ATwbMail@163.com</b></p>
-    <a style="color: white" href="tanweibo.github.io/oldhome">返回</a>
+    <canvas id="mouseCanvas"></canvas>
+    
+    <div class="container">
+        <div class="header">
+            <h1><a style="cursor: default" class="about-link" href="https://github.com/TanWeibo">关于我</a></h1>
+            <p class="tagline">开发者 & 技术爱好者</p>
+        </div>
+        
+        <div class="content">
+            <p class="intro">Hydrooxygen Here!!!。</p>
+            
+            <div class="details">
+                <div class="detail-card">
+                    <h3><i class="fas fa-code"></i> 开发技能</h3>
+                    <p>专注于Web开发、桌面应用和各种实用工具的创建。喜欢探索新技术和解决复杂问题。</p>
+                </div>
+                
+                <div class="detail-card">
+                    <h3><i class="fas fa-rocket"></i> 项目经验</h3>
+                    <p>开发过多种类型的项目，从系统工具到Web应用，注重用户体验和代码质量。</p>
+                </div>
+                
+                <div class="detail-card">
+                    <h3><i class="fas fa-heart"></i> 兴趣方向</h3>
+                    <p>对开源项目充满热情，喜欢分享知识和技术解决方案，致力于创造对他人有帮助的工具。</p>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <a href="mailto:ATwbMail@163.com" class="email">
+                    <i class="fas fa-envelope"></i> ATwbMail@163.com
+                </a>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="tanweibo.github.io/oldhome" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> 返回主页
+                </a>
+                <a href="../downloads" class="btn">
+                    <i class="fas fa-download"></i> 下载中心
+                </a>
+                <a href="../projects" class="btn">
+                    <i class="fas fa-folder"></i> 我的项目
+                </a>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://github.com/TanWeibo" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-weibo"></i>
+                </a>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Allen | 由激情与代码驱动</p>
+        </footer>
+    </div>
+
+    <script>
+        // 保留原有的粒子动画代码
+        var SCREEN_WIDTH=window.innerWidth;
+        var SCREEN_HEIGHT=window.innerHeight;
+        var RADIUS=70;
+        var QUANTITY=25;
+        var RADIUS_SCALE=1;
+        var RADIUS_SCALE_MIN=1;
+        var RADIUS_SCALE_MAX=1.5;
+        var canvas;
+        var context;
+        var particles;
+        var mouseX=SCREEN_WIDTH*0.5;
+        var mouseY=SCREEN_HEIGHT*0.5;
+        var mouseIsDown=false;
+
+        function init(){
+            canvas=document.getElementById('mouseCanvas');
+            if(canvas&&canvas.getContext){
+                context=canvas.getContext('2d');
+                window.addEventListener('mousemove',documentMouseMoveHandler,false);
+                window.addEventListener('mousedown',documentMouseDownHandler,false);
+                window.addEventListener('mouseup',documentMouseUpHandler,false);
+                document.addEventListener('touchstart',documentTouchStartHandler,false);
+                document.addEventListener('touchmove',documentTouchMoveHandler,false);
+                window.addEventListener('resize',windowResizeHandler,false);
+                createParticles();
+                windowResizeHandler();
+                setInterval(loop,1000/60)
+            }
+        }
+
+        function createParticles(){
+            particles=[];
+            for(var i=0;i<QUANTITY;i++){
+                var particle={
+                    size:1,
+                    position:{x:mouseX,y:mouseY},
+                    offset:{x:0,y:0},
+                    shift:{x:mouseX,y:mouseY},
+                    speed:0.01+Math.random()*0.04,
+                    targetSize:1,
+                    fillColor:'#'+(Math.random()*0x404040+0xaaaaaa|0).toString(16),
+                    orbit:RADIUS*.5+(RADIUS*.5*Math.random())
+                };
+                particles.push(particle)
+            }
+        }
+
+        function documentMouseMoveHandler(event){
+            mouseX=event.clientX-(window.innerWidth-SCREEN_WIDTH)*.5;
+            mouseY=event.clientY-(window.innerHeight-SCREEN_HEIGHT)*.5
+        }
+
+        function documentMouseDownHandler(event){
+            mouseIsDown=true
+        }
+
+        function documentMouseUpHandler(event){
+            mouseIsDown=false
+        }
+
+        function documentTouchStartHandler(event){
+            if(event.touches.length==1){
+                event.preventDefault();
+                mouseX=event.touches[0].pageX-(window.innerWidth-SCREEN_WIDTH)*.5;
+                mouseY=event.touches[0].pageY-(window.innerHeight-SCREEN_HEIGHT)*.5
+            }
+        }
+
+        function documentTouchMoveHandler(event){
+            if(event.touches.length==1){
+                event.preventDefault();
+                mouseX=event.touches[0].pageX-(window.innerWidth-SCREEN_WIDTH)*.5;
+                mouseY=event.touches[0].pageY-(window.innerHeight-SCREEN_HEIGHT)*.5
+            }
+        }
+
+        function windowResizeHandler(){
+            SCREEN_WIDTH=window.innerWidth;
+            SCREEN_HEIGHT=window.innerHeight;
+            canvas.width=SCREEN_WIDTH;
+            canvas.height=SCREEN_HEIGHT
+        }
+
+        function loop(){
+            if(mouseIsDown){
+                RADIUS_SCALE+=(RADIUS_SCALE_MAX-RADIUS_SCALE)*(0.02)
+            }else{
+                RADIUS_SCALE-=(RADIUS_SCALE-RADIUS_SCALE_MIN)*(0.02)
+            }
+            RADIUS_SCALE=Math.min(RADIUS_SCALE,RADIUS_SCALE_MAX);
+            context.fillStyle='rgba(0,0,0,0.05)';
+            context.fillRect(0,0,context.canvas.width,context.canvas.height);
+            for(i=0,len=particles.length;i<len;i++){
+                var particle=particles[i];
+                var lp={x:particle.position.x,y:particle.position.y};
+                particle.offset.x+=particle.speed;
+                particle.offset.y+=particle.speed;
+                particle.shift.x+=(mouseX-particle.shift.x)*(particle.speed);
+                particle.shift.y+=(mouseY-particle.shift.y)*(particle.speed);
+                particle.position.x=particle.shift.x+Math.cos(i+particle.offset.x)*(particle.orbit*RADIUS_SCALE);
+                particle.position.y=particle.shift.y+Math.sin(i+particle.offset.y)*(particle.orbit*RADIUS_SCALE);
+                particle.position.x=Math.max(Math.min(particle.position.x,SCREEN_WIDTH),0);
+                particle.position.y=Math.max(Math.min(particle.position.y,SCREEN_HEIGHT),0);
+                particle.size+=(particle.targetSize-particle.size)*0.01;
+                if(Math.round(particle.size)==Math.round(particle.targetSize)){
+                    particle.targetSize=1+Math.random()*2
+                }
+                context.beginPath();
+                context.fillStyle=particle.fillColor;
+                context.strokeStyle=particle.fillColor;
+                context.lineWidth=particle.size;
+                context.moveTo(lp.x,lp.y);
+                context.lineTo(particle.position.x,particle.position.y);
+                context.stroke();
+                context.arc(particle.position.x,particle.position.y,particle.size/2,0,Math.PI*2,true);
+                context.fill()
+            }
+        }
+
+        window.onload=function(){
+            document.getElementById('mouseCanvas').style="width:100%;height:100%;position: fixed;top: 0;left: 0;z-index: -1;";
+            document.getElementsByTagName('html')[0].style='margin:0;width:100%;height:100%;';
+            document.getElementsByTagName('body')[0].style='margin:0;width:100%;height:100%;';
+            init()
+        };
+    </script>
 </body>
 </html>
