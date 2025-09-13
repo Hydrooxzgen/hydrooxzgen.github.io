@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>页面未更新 -- 404</title>
+    <title>404</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -117,48 +117,100 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(77, 171, 247, 0.3);
+            cursor: pointer;
+            border: none;
+            outline: none;
         }
-        
+
         .btn-primary {
             background: #4dabf7;
         }
-        
+
         .btn-primary:hover {
             background: #339af0;
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(77, 171, 247, 0.4);
         }
-        
+
         .btn-secondary {
             background: #ff6b6b;
             box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
         }
-        
+
         .btn-secondary:hover {
             background: #fa5252;
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
         }
-        
+
         .btn-outline {
             background: transparent;
             border: 2px solid #4dabf7;
             color: #4dabf7;
             box-shadow: none;
         }
-        
+
         .btn-outline:hover {
             background: #4dabf7;
             color: white;
         }
-        
+
+        .btn-refresh {
+            background: #20c997;
+            box-shadow: 0 4px 10px rgba(32, 201, 151, 0.3);
+        }
+
+        .btn-refresh:hover {
+            background: #12a27a;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(32, 201, 151, 0.4);
+        }
+
+        .btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn.loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin: -10px 0 0 -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
         .contact-info {
             margin-top: 40px;
             padding-top: 20px;
             border-top: 1px solid #eee;
             color: #666;
         }
-        
+
+        .shortcut-hint {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #888;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .shortcut-key {
+            background: #f1f3f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
                 transform: translateY(0);
@@ -170,21 +222,25 @@
                 transform: translateY(-10px);
             }
         }
-        
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
             }
-            
+
             .error-content {
                 padding: 25px;
             }
-            
+
             .action-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .btn {
                 width: 100%;
                 justify-content: center;
@@ -198,17 +254,17 @@
             <div class="error-icon">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h1>!404!</h1>
-            <h1>抱歉，此页面尚未更新</h1>
+            <h1>404</h1>
+            <h1>你所访问的内容不存在</h1>
         </div>
-        
+
         <div class="error-content">
             <p class="error-message">
-                您正在访问的页面目前还没有内容更新。我们的开发团队正在努力完善网站内容，请您稍后再来查看。
+                你尝试访问的所选资源无法找到，请检查你的URL是否正确，然后重试。若你认为这是错误，请刷新界面。无果请联系我们。
             </p>
-            
+
             <div class="suggestions">
-                <h3><i class="fas fa-lightbulb"></i> 您可以尝试：</h3>
+                <h3><i class="fas fa-lightbulb"></i> 您可以：</h3>
                 <ul class="suggestion-list">
                     <li>
                         <i class="fas fa-arrow-left"></i>
@@ -228,7 +284,7 @@
                     </li>
                 </ul>
             </div>
-            
+
             <div class="action-buttons">
                 <a href="../htmlpages/downloads" class="btn btn-primary">
                     <i class="fas fa-arrow-left"></i> 进入下载中心
@@ -236,11 +292,20 @@
                 <a href="../" class="btn btn-secondary">
                     <i class="fas fa-home"></i> 返回主页
                 </a>
+                <button id="refresh-btn" class="btn btn-refresh">
+                    <i class="fas fa-sync-alt"></i> 刷新页面
+                </button>
                 <a href="mailto:tan.allen.mail@gmail.com" class="btn btn-outline">
                     <i class="fas fa-envelope"></i> 联系管理员
                 </a>
             </div>
-            
+
+            <div class="shortcut-hint">
+                <span>快捷键:</span>
+                <span class="shortcut-key">F5</span>
+                <span>刷新页面</span>
+            </div>
+
             <div class="contact-info">
                 <p>如果您认为这是一个错误，或者需要立即帮助，请通过上述方式联系我们</p>
             </div>
@@ -253,12 +318,36 @@
             const container = document.querySelector('.container');
             container.style.opacity = '0';
             container.style.transform = 'translateY(20px)';
-            
+
             setTimeout(() => {
                 container.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 container.style.opacity = '1';
                 container.style.transform = 'translateY(0)';
             }, 300);
+
+            // 获取刷新按钮
+            const refreshBtn = document.getElementById('refresh-btn');
+
+            // 添加刷新按钮点击事件
+            refreshBtn.addEventListener('click', function() {
+                // 添加加载动画
+                this.classList.add('loading');
+
+                // 设置一个短暂的延迟，让用户看到反馈
+                setTimeout(() => {
+                    // 使用location.reload()刷新页面
+                    window.location.reload();
+                }, 800);
+            });
+
+            // 添加键盘快捷键监听
+            document.addEventListener('keydown', function(e) {
+                // F5键刷新
+                if (e.key === 'F5') {
+                    e.preventDefault();
+                    refreshBtn.click();
+                }
+            });
         });
     </script>
 </body>
