@@ -16,9 +16,7 @@
                         board: '#DEB887',
                         black: '#000000',
                         white: '#FFFFFF',
-                        backBtn: '#2C3E50',
-                        forbidden: '#EF4444', // 禁手提示颜色
-                        draw: '#F59E0B', // 平局提示颜色
+                        backBtn: '#2C3E50', // 返回按钮颜色
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -50,20 +48,13 @@
                 transform: translateY(-2px);
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             }
-            .forbidden-marker {
-                animation: forbidden-pulse 2s infinite;
-            }
-            @keyframes forbidden-pulse {
-                0%, 100% { opacity: 0.7; }
-                50% { opacity: 1; }
-            }
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4 font-sans">
     <!-- 返回主页按钮容器 -->
     <div class="max-w-4xl mx-auto mb-6">
-        <a href="./index" class="inline-flex items-center gap-2 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-6 rounded-lg font-medium btn-hover shadow-md transition-all duration-300">
+        <a href="../index" class="inline-flex items-center gap-2 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-6 rounded-lg font-medium btn-hover shadow-md transition-all duration-300">
             <i class="fa-solid fa-arrow-left mr-2"></i>
             <span>返回主页</span>
         </a>
@@ -73,7 +64,7 @@
     <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         <div class="bg-primary text-white p-6 text-center relative">
             <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold">五子棋</h1>
-            <p class="text-secondary mt-2">经典对弈游戏 - 黑棋有禁手规则</p>
+            <p class="text-secondary mt-2">经典对弈游戏</p>
         </div>
         
         <div class="p-6 md:p-8 flex flex-col md:flex-row gap-6">
@@ -84,17 +75,7 @@
                 </div>
                 
                 <div id="gameStatus" class="mt-4 p-3 bg-secondary/20 rounded-lg text-center">
-                    <p id="statusText" class="font-medium">游戏开始! 黑棋先行 (有禁手限制)</p>
-                </div>
-                
-                <!-- 禁手规则提示 -->
-                <div id="forbiddenRules" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <h3 class="font-semibold text-red-700 mb-1 flex items-center">
-                        <i class="fa-solid fa-triangle-exclamation mr-2"></i>黑棋禁手规则
-                    </h3>
-                    <p class="text-sm text-red-600">
-                        黑棋不能形成<span class="font-bold">三三</span>、<span class="font-bold">四四</span>、<span class="font-bold">长连</span>（超过五子连线）。违反禁手则判负！
-                    </p>
+                    <p id="statusText" class="font-medium">游戏开始! 黑棋先行</p>
                 </div>
             </div>
             
@@ -120,10 +101,6 @@
                             <span class="text-gray-600">步数</span>
                             <span id="moveCount">0</span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-gray-600">禁手检测</span>
-                            <span id="forbiddenCheck" class="text-sm bg-gray-100 px-2 py-1 rounded">正常</span>
-                        </div>
                     </div>
                 </div>
                 
@@ -142,31 +119,7 @@
                         </li>
                         <li class="flex items-start">
                             <i class="fa-solid fa-circle text-xs mt-1.5 mr-2 text-primary"></i>
-                            <span><span class="font-bold text-red-600">黑棋有禁手限制</span>：不能走三三、四四、长连</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-circle text-xs mt-1.5 mr-2 text-primary"></i>
                             <span>点击棋盘上的交叉点放置棋子</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="bg-gray-50 rounded-lg p-5 shadow-sm">
-                    <h2 class="text-lg font-semibold mb-3 flex items-center">
-                        <i class="fa-solid fa-chess-board mr-2 text-primary"></i>禁手说明
-                    </h2>
-                    <ul class="text-sm text-gray-600 space-y-2">
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-ban text-xs mt-1.5 mr-2 text-red-500"></i>
-                            <span><strong>三三禁手</strong>：同时形成两个活三</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-ban text-xs mt-1.5 mr-2 text-red-500"></i>
-                            <span><strong>四四禁手</strong>：同时形成两个活四</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-ban text-xs mt-1.5 mr-2 text-red-500"></i>
-                            <span><strong>长连禁手</strong>：形成六个或更多棋子连线</span>
                         </li>
                     </ul>
                 </div>
@@ -183,7 +136,7 @@
         </div>
         
         <div class="bg-gray-50 p-4 text-center text-sm text-gray-500">
-            <p>© 2025 五子棋游戏 | 支持禁手检测和死局判断</p>
+            <p>© 2025 五子棋游戏 | 一个简单的 Web 游戏</p>
         </div>
     </div>
 
@@ -191,55 +144,16 @@
     <div id="winModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 transform transition-transform duration-300 scale-95">
             <div class="text-center">
-                <div id="winIcon" class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fa-solid fa-trophy text-3xl text-yellow-500"></i>
                 </div>
                 <h2 class="text-2xl font-bold mb-2" id="winnerText">黑棋获胜!</h2>
-                <p class="text-gray-600 mb-6" id="winDescription">恭喜您赢得了这场精彩的比赛!</p>
+                <p class="text-gray-600 mb-6">恭喜您赢得了这场精彩的比赛!</p>
                 <div class="flex gap-3">
                     <button id="newGameBtn" class="flex-1 bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg font-medium btn-hover">
                         开始新游戏
                     </button>
-                    <a href="./index" class="flex-1 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-4 rounded-lg font-medium btn-hover flex items-center justify-center">
-                        <i class="fa-solid fa-home mr-2"></i>返回主页
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 禁手提示模态框 -->
-    <div id="forbiddenModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 transform transition-transform duration-300 scale-95">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-ban text-3xl text-red-500"></i>
-                </div>
-                <h2 class="text-2xl font-bold mb-2 text-red-600">禁手违规!</h2>
-                <p class="text-gray-600 mb-4" id="forbiddenType">黑棋形成了三三禁手!</p>
-                <p class="text-sm text-gray-500 mb-6">根据五子棋竞赛规则，黑棋不能下这步棋</p>
-                <button id="forbiddenOkBtn" class="bg-red-500 hover:bg-red-600 text-white py-3 px-8 rounded-lg font-medium btn-hover">
-                    确认 (白棋获胜)
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 死局/平局提示模态框 -->
-    <div id="drawModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 transform transition-transform duration-300 scale-95">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-handshake text-3xl text-yellow-500"></i>
-                </div>
-                <h2 class="text-2xl font-bold mb-2 text-yellow-600">游戏结束</h2>
-                <p class="text-gray-600 mb-4" id="drawType">棋盘已满，双方平局!</p>
-                <p class="text-sm text-gray-500 mb-6">双方均未能在棋盘填满前形成五子连线</p>
-                <div class="flex gap-3">
-                    <button id="drawNewGameBtn" class="flex-1 bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg font-medium btn-hover">
-                        开始新游戏
-                    </button>
-                    <a href="./index" class="flex-1 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-4 rounded-lg font-medium btn-hover flex items-center justify-center">
+                    <a href="../index" class="flex-1 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-4 rounded-lg font-medium btn-hover flex items-center justify-center">
                         <i class="fa-solid fa-home mr-2"></i>返回主页
                     </a>
                 </div>
@@ -253,15 +167,6 @@
             const BOARD_SIZE = 15; // 15x15的棋盘
             const CELL_SIZE = Math.min(window.innerWidth * 0.8 / BOARD_SIZE, window.innerHeight * 0.6 / BOARD_SIZE);
             const PIECE_SIZE = CELL_SIZE * 0.8;
-            
-            // 禁手类型常量
-            const FORBIDDEN_TYPES = {
-                NONE: 'none',
-                DOUBLE_THREE: '三三禁手',      // 双活三
-                DOUBLE_FOUR: '四四禁手',       // 双活四
-                OVERLINE: '长连禁手',          // 超过五子连线
-                BOTH: '复合禁手'               // 多种禁手同时出现
-            };
             
             // 游戏状态
             let gameBoard = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(0));
@@ -279,20 +184,11 @@
             const playerText = document.getElementById('playerText');
             const moveCountEl = document.getElementById('moveCount');
             const gameTimeEl = document.getElementById('gameTime');
-            const forbiddenCheckEl = document.getElementById('forbiddenCheck');
             const restartBtn = document.getElementById('restartBtn');
             const undoBtn = document.getElementById('undoBtn');
             const winModal = document.getElementById('winModal');
             const winnerText = document.getElementById('winnerText');
-            const winDescription = document.getElementById('winDescription');
-            const winIcon = document.getElementById('winIcon');
             const newGameBtn = document.getElementById('newGameBtn');
-            const forbiddenModal = document.getElementById('forbiddenModal');
-            const forbiddenTypeText = document.getElementById('forbiddenType');
-            const forbiddenOkBtn = document.getElementById('forbiddenOkBtn');
-            const drawModal = document.getElementById('drawModal');
-            const drawTypeText = document.getElementById('drawType');
-            const drawNewGameBtn = document.getElementById('drawNewGameBtn');
             
             // 设置Canvas尺寸
             canvas.width = CELL_SIZE * (BOARD_SIZE - 1);
@@ -370,7 +266,7 @@
                 } else {
                     // 白棋 - 渐变效果
                     const gradient = ctx.createRadialGradient(
-                        x - PIECE_SIZE / 6, y - PIECE_SIZE / 6, PIECE_SIZE / 10,
+                        x - PIECE_SIZE / 6, y - PIECESize / 6, PIECE_SIZE / 10,
                         x, y, PIECE_SIZE / 2
                     );
                     gradient.addColorStop(0, '#fff');
@@ -386,156 +282,6 @@
                 ctx.stroke();
             }
             
-            // 检查连线方向上的棋子数量
-            function countInDirection(row, col, player, dx, dy) {
-                let count = 1; // 当前位置
-        
-                // 正向检查
-                for (let i = 1; i < 6; i++) {
-                    const newRow = row + i * dy;
-                    const newCol = col + i * dx;
-                    
-                    if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
-                        break;
-                    }
-                    
-                    if (gameBoard[newRow][newCol] === player) {
-                        count++;
-                    } else {
-                        break;
-                    }
-                }
-        
-                // 反向检查
-                for (let i = 1; i < 6; i++) {
-                    const newRow = row - i * dy;
-                    const newCol = col - i * dx;
-                    
-                    if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
-                        break;
-                    }
-                    
-                    if (gameBoard[newRow][newCol] === player) {
-                        count++;
-                    } else {
-                        break;
-                    }
-                }
-        
-                return count;
-            }
-            
-            // 检查是否为活三、活四等
-            function checkLineStatus(row, col, player, dx, dy) {
-                let line = [player];
-                let leftBlocked = false;
-                let rightBlocked = false;
-        
-                // 正向检查
-                for (let i = 1; i < 6; i++) {
-                    const newRow = row + i * dy;
-                    const newCol = col + i * dx;
-                    
-                    if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
-                        rightBlocked = true;
-                        break;
-                    }
-                    
-                    const cell = gameBoard[newRow][newCol];
-                    if (cell === player) {
-                        line.push(player);
-                    } else if (cell === 0) {
-                        break;
-                    } else {
-                        rightBlocked = true;
-                        break;
-                    }
-                }
-        
-                // 反向检查
-                for (let i = 1; i < 6; i++) {
-                    const newRow = row - i * dy;
-                    const newCol = col - i * dx;
-                    
-                    if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
-                        leftBlocked = true;
-                        break;
-                    }
-                    
-                    const cell = gameBoard[newRow][newCol];
-                    if (cell === player) {
-                        line.unshift(player);
-                    } else if (cell === 0) {
-                        break;
-                    } else {
-                        leftBlocked = true;
-                        break;
-                    }
-                }
-        
-                // 计算连子数
-                const length = line.length;
-                const isLive = !leftBlocked && !rightBlocked;
-                const isDead = leftBlocked && rightBlocked;
-                const isHalfLive = (leftBlocked && !rightBlocked) || (!leftBlocked && rightBlocked);
-        
-                return { length, isLive, isDead, isHalfLive };
-            }
-            
-            // 检查禁手
-            function checkForbiddenMove(row, col, player) {
-                if (player !== 1) return FORBIDDEN_TYPES.NONE; // 只有黑棋有禁手
-        
-                // 检查长连禁手 (超过五子连线)
-                const directions = [
-                    [1, 0],   // 水平
-                    [0, 1],   // 垂直
-                    [1, 1],   // 对角线
-                    [1, -1]   // 反对角线
-                ];
-        
-                // 先检查长连禁手
-                for (const [dx, dy] of directions) {
-                    const count = countInDirection(row, col, player, dx, dy);
-                    if (count > 5) {
-                        return FORBIDDEN_TYPES.OVERLINE;
-                    }
-                }
-        
-                // 检查三三和四四禁手
-                let threeCount = 0;
-                let fourCount = 0;
-                let forbiddenTypes = [];
-        
-                for (const [dx, dy] of directions) {
-                    const lineStatus = checkLineStatus(row, col, player, dx, dy);
-                    
-                    if (lineStatus.length === 3 && lineStatus.isLive) {
-                        threeCount++;
-                    } else if (lineStatus.length === 4 && lineStatus.isLive) {
-                        fourCount++;
-                    }
-                }
-        
-                // 检查双三禁手
-                if (threeCount >= 2) {
-                    forbiddenTypes.push(FORBIDDEN_TYPES.DOUBLE_THREE);
-                }
-        
-                // 检查双四禁手
-                if (fourCount >= 2) {
-                    forbiddenTypes.push(FORBIDDEN_TYPES.DOUBLE_FOUR);
-                }
-        
-                if (forbiddenTypes.length > 1) {
-                    return FORBIDDEN_TYPES.BOTH;
-                } else if (forbiddenTypes.length === 1) {
-                    return forbiddenTypes[0];
-                }
-        
-                return FORBIDDEN_TYPES.NONE;
-            }
-            
             // 检查胜利条件
             function checkWin(row, col, player) {
                 const directions = [
@@ -544,56 +290,68 @@
                     [1, 1],   // 对角线
                     [1, -1]   // 反对角线
                 ];
-        
+                
                 for (const [dx, dy] of directions) {
-                    const count = countInDirection(row, col, player, dx, dy);
-                    if (count === 5) {
+                    let count = 1;  // 当前位置已经有一个棋子
+                    
+                    // 正向检查
+                    for (let i = 1; i < 5; i++) {
+                        const newRow = row + i * dy;
+                        const newCol = col + i * dx;
+                        
+                        if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
+                            break;
+                        }
+                        
+                        if (gameBoard[newRow][newCol] === player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    // 反向检查
+                    for (let i = 1; i < 5; i++) {
+                        const newRow = row - i * dy;
+                        const newCol = col - i * dx;
+                        
+                        if (newRow < 0 || newRow >= BOARD_SIZE || newCol < 0 || newCol >= BOARD_SIZE) {
+                            break;
+                        }
+                        
+                        if (gameBoard[newRow][newCol] === player) {
+                            count++;
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    if (count >= 5) {
                         return true;
                     }
                 }
-        
+                
                 return false;
             }
             
-            // 检查是否形成死局 (双方都无法获胜)
-            function checkDeadGame() {
-                // 检查棋盘是否已满
-                let emptyCells = 0;
+            // 检查平局
+            function checkDraw() {
                 for (let i = 0; i < BOARD_SIZE; i++) {
                     for (let j = 0; j < BOARD_SIZE; j++) {
                         if (gameBoard[i][j] === 0) {
-                            emptyCells++;
+                            return false; // 还有空位，不是平局
                         }
                     }
                 }
-                
-                // 如果棋盘已满，形成死局
-                if (emptyCells === 0) {
-                    return { isDead: true, reason: "棋盘已满，双方平局" };
-                }
-                
-                // 检查双方是否还有获胜的可能性
-                // 这里可以添加更复杂的死局检测逻辑
-                // 暂时只检查棋盘是否已满
-                
-                return { isDead: false, reason: "" };
+                return true; // 棋盘已满，平局
             }
             
             // 更新游戏状态显示
             function updateGameStatus() {
                 if (gameActive) {
-                    statusText.textContent = `游戏进行中 - ${currentPlayer === 1 ? '黑棋(有禁手)' : '白棋'}回合`;
+                    statusText.textContent = `游戏进行中 - ${currentPlayer === 1 ? '黑棋' : '白棋'}回合`;
                     currentPlayerEl.className = `w-6 h-6 rounded-full ${currentPlayer === 1 ? 'bg-black' : 'bg-white border border-gray-300'} mr-2 piece-shadow`;
                     playerText.textContent = currentPlayer === 1 ? '黑棋' : '白棋';
-                    
-                    // 更新禁手检测状态
-                    if (currentPlayer === 1) {
-                        forbiddenCheckEl.textContent = "检查中";
-                        forbiddenCheckEl.className = "text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded";
-                    } else {
-                        forbiddenCheckEl.textContent = "正常";
-                        forbiddenCheckEl.className = "text-sm bg-green-100 text-green-800 px-2 py-1 rounded";
-                    }
                 }
                 moveCountEl.textContent = moveHistory.length;
             }
@@ -618,27 +376,11 @@
             }
             
             // 显示胜利模态框
-            function showWinModal(winner, reason = "") {
+            function showWinModal(winner) {
                 gameActive = false;
                 stopTimer();
                 
                 winnerText.textContent = `${winner === 1 ? '黑棋' : '白棋'}获胜!`;
-                
-                if (reason) {
-                    winDescription.textContent = reason;
-                } else {
-                    winDescription.textContent = "恭喜您赢得了这场精彩的比赛!";
-                }
-                
-                // 设置图标颜色
-                if (winner === 1) {
-                    winIcon.className = "w-16 h-16 bg-black/10 rounded-full flex items-center justify-center mx-auto mb-4";
-                    winIcon.innerHTML = '<i class="fa-solid fa-trophy text-3xl text-black"></i>';
-                } else {
-                    winIcon.className = "w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4";
-                    winIcon.innerHTML = '<i class="fa-solid fa-trophy text-3xl text-gray-700"></i>';
-                }
-                
                 winModal.classList.remove('hidden');
                 
                 // 添加动画效果
@@ -660,60 +402,6 @@
                 }, 300);
             }
             
-            // 显示禁手模态框
-            function showForbiddenModal(forbiddenType) {
-                gameActive = false;
-                stopTimer();
-                
-                forbiddenTypeText.textContent = `黑棋形成了${forbiddenType}!`;
-                forbiddenModal.classList.remove('hidden');
-                
-                // 添加动画效果
-                setTimeout(() => {
-                    forbiddenModal.classList.add('opacity-100');
-                    forbiddenModal.querySelector('div').classList.remove('scale-95');
-                    forbiddenModal.querySelector('div').classList.add('scale-100');
-                }, 10);
-            }
-            
-            // 隐藏禁手模态框
-            function hideForbiddenModal() {
-                forbiddenModal.classList.remove('opacity-100');
-                forbiddenModal.querySelector('div').classList.remove('scale-100');
-                forbiddenModal.querySelector('div').classList.add('scale-95');
-                
-                setTimeout(() => {
-                    forbiddenModal.classList.add('hidden');
-                }, 300);
-            }
-            
-            // 显示死局/平局模态框
-            function showDrawModal(reason) {
-                gameActive = false;
-                stopTimer();
-                
-                drawTypeText.textContent = reason;
-                drawModal.classList.remove('hidden');
-                
-                // 添加动画效果
-                setTimeout(() => {
-                    drawModal.classList.add('opacity-100');
-                    drawModal.querySelector('div').classList.remove('scale-95');
-                    drawModal.querySelector('div').classList.add('scale-100');
-                }, 10);
-            }
-            
-            // 隐藏死局/平局模态框
-            function hideDrawModal() {
-                drawModal.classList.remove('opacity-100');
-                drawModal.querySelector('div').classList.remove('scale-100');
-                drawModal.querySelector('div').classList.add('scale-95');
-                
-                setTimeout(() => {
-                    drawModal.classList.add('hidden');
-                }, 300);
-            }
-            
             // 重置游戏
             function resetGame() {
                 gameBoard = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(0));
@@ -730,8 +418,6 @@
                 startTimer();
                 
                 hideWinModal();
-                hideForbiddenModal();
-                hideDrawModal();
             }
             
             // 悔棋
@@ -765,16 +451,6 @@
                 
                 // 检查坐标是否在棋盘内且为空
                 if (row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE && gameBoard[row][col] === 0) {
-                    // 检查禁手 (仅对黑棋)
-                    if (currentPlayer === 1) {
-                        const forbiddenType = checkForbiddenMove(row, col, currentPlayer);
-                        if (forbiddenType !== FORBIDDEN_TYPES.NONE) {
-                            // 显示禁手违规
-                            showForbiddenModal(forbiddenType);
-                            return;
-                        }
-                    }
-                    
                     // 落子
                     gameBoard[row][col] = currentPlayer;
                     moveHistory.push({row, col, player: currentPlayer});
@@ -788,10 +464,11 @@
                         return;
                     }
                     
-                    // 检查是否形成死局
-                    const deadGame = checkDeadGame();
-                    if (deadGame.isDead) {
-                        showDrawModal(deadGame.reason);
+                    // 检查是否平局
+                    if (checkDraw()) {
+                        gameActive = false;
+                        stopTimer();
+                        statusText.textContent = '游戏结束 - 平局!';
                         return;
                     }
                     
@@ -821,18 +498,34 @@
                 
                 // 如果坐标在棋盘内且为空，绘制预览棋子
                 if (row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE && gameBoard[row][col] === 0) {
-                    // 检查是否为禁手位置
-                    let isForbidden = false;
-                    if (currentPlayer === 1) {
-                        const forbiddenType = checkForbiddenMove(row, col, currentPlayer);
-                        isForbidden = forbiddenType !== FORBIDDEN_TYPES.NONE;
-                    }
-                    
                     ctx.beginPath();
                     ctx.arc(col * CELL_SIZE, row * CELL_SIZE, PIECE_SIZE / 2, 0, Math.PI * 2);
                     
                     if (currentPlayer === 1) {
-                        if (isForbidden) {
-                            // 禁手位置显示红色提示
-                            ctx.fillStyle = 'rgba(239, 68, 68, 0.4)';
-                            ctx.strokeStyle = 'rgba(239
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                    } else {
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                    }
+                    
+                    ctx.fill();
+                }
+            });
+            
+            // 鼠标离开棋盘时重绘
+            canvas.addEventListener('mouseleave', () => {
+                drawBoard();
+            });
+            
+            // 事件监听
+            restartBtn.addEventListener('click', resetGame);
+            undoBtn.addEventListener('click', undoMove);
+            newGameBtn.addEventListener('click', resetGame);
+            
+            // 初始化游戏
+            drawBoard();
+            updateGameStatus();
+            startTimer();
+        });
+    </script>
+</body>
+</html>
