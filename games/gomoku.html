@@ -16,7 +16,6 @@
                         board: '#DEB887',
                         black: '#000000',
                         white: '#FFFFFF',
-                        backBtn: '#2C3E50', // 返回按钮颜色
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -51,18 +50,9 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4 font-sans">
-    <!-- 返回主页按钮容器 -->
-    <div class="max-w-4xl mx-auto mb-6">
-        <a href="../index" class="inline-flex items-center gap-2 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-6 rounded-lg font-medium btn-hover shadow-md transition-all duration-300">
-            <i class="fa-solid fa-arrow-left mr-2"></i>
-            <span>返回主页</span>
-        </a>
-    </div>
-    
-    <!-- 游戏主容器 -->
-    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="bg-primary text-white p-6 text-center relative">
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4 font-sans">
+    <div class="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="bg-primary text-white p-6 text-center">
             <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold">五子棋</h1>
             <p class="text-secondary mt-2">经典对弈游戏</p>
         </div>
@@ -149,14 +139,9 @@
                 </div>
                 <h2 class="text-2xl font-bold mb-2" id="winnerText">黑棋获胜!</h2>
                 <p class="text-gray-600 mb-6">恭喜您赢得了这场精彩的比赛!</p>
-                <div class="flex gap-3">
-                    <button id="newGameBtn" class="flex-1 bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg font-medium btn-hover">
-                        开始新游戏
-                    </button>
-                    <a href="../index" class="flex-1 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-4 rounded-lg font-medium btn-hover flex items-center justify-center">
-                        <i class="fa-solid fa-home mr-2"></i>返回主页
-                    </a>
-                </div>
+                <button id="newGameBtn" class="bg-primary hover:bg-primary/90 text-white py-3 px-8 rounded-lg font-medium btn-hover">
+                    开始新游戏
+                </button>
             </div>
         </div>
     </div>
@@ -266,7 +251,7 @@
                 } else {
                     // 白棋 - 渐变效果
                     const gradient = ctx.createRadialGradient(
-                        x - PIECE_SIZE / 6, y - PIECESize / 6, PIECE_SIZE / 10,
+                        x - PIECE_SIZE / 6, y - PIECE_SIZE / 6, PIECE_SIZE / 10,
                         x, y, PIECE_SIZE / 2
                     );
                     gradient.addColorStop(0, '#fff');
@@ -528,4 +513,3 @@
         });
     </script>
 </body>
-</html>
