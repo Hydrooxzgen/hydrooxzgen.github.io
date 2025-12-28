@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>画圆测试小游戏</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            secondary: '#10B981',
+            neutral: '#F3F4F6',
+            dark: '#1F2937',
+            backBtn: '#2C3E50' // 返回按钮颜色
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .grid-pattern {
+        background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
+                          linear-gradient(to right, #e5e7eb 1px, transparent 1px);
+      }
+      .backdrop-blur-sm {
+        backdrop-filter: blur(4px);
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .btn-hover {
+        transition: all 0.2s ease;
+      }
+      .btn-hover:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+    }
+  </style>
+</head>
+<body class="font-inter bg-white text-dark min-h-screen p-4">
+  <!-- 返回主页按钮 -->
+  <div class="max-w-6xl mx-auto mb-6">
+    <a href="./index" class="inline-flex items-center gap-2 bg-backBtn hover:bg-backBtn/90 text-white py-3 px-6 rounded-lg font-medium btn-hover shadow-md transition-all duration-300">
+      <i class="fa fa-arrow-left mr-2"></i>
+      <span>返回主页</span>
+    </a>
+  </div>
+  
+  <!-- 开始界面 -->
+  <div id="start-screen" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-8">
+    <div class="text-center mb-8">
+      <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-primary mb-4 text-shadow">画圆测试</h1>
+      <div class="w-20 h-1 bg-primary/50 mx-auto rounded-full"></div>
+    </div>
+    
+    <div class="space-y-4 mb-8">
+      <p class="text-lg text-dark/80 leading-relaxed">
+        <i class="fa fa-info-circle text-primary mr-2"></i>
+        在画布上用鼠标绘制一个完美的圆，系统将根据圆的完美程度评分。
+      </p>
+      <p class="text-lg text-dark/80 leading-relaxed">
+        <i class="fa fa-mouse-pointer text-primary mr-2"></i>
+        按住鼠标左键并拖动来绘制圆。
+      </p>
+      <p class="text-lg text-dark/80 leading-relaxed">
+        <i class="fa fa-refresh text-primary mr-2"></i>
+        绘制完成后点击"重新开始"按钮可以再次尝试。
+      </p>
+    </div>
+    
+    <button id="start-btn" class="w-full py-4 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
+      <span>开始游戏</span>
+      <i class="fa fa-play ml-2"></i>
+    </button>
+  </div>
+
+  <!-- 游戏画布区域 -->
+  <div id="game-container" class="max-w-6xl mx-auto mt-6 opacity-0 pointer-events-none transition-opacity duration-500">
+    <div class="relative rounded-2xl shadow-xl overflow-hidden">
+      <!-- 顶部工具栏 -->
+      <div class="absolute top-0 left-0 right-0 flex justify-between items-center p-6 z-10 bg-white/80 backdrop-blur-sm">
+        <div class="flex items-center">
+          <span class="text-dark/80 mr-2">得分:</span>
+          <span id="score-display" class="text-2xl font-bold text-primary">0</span>
+        </div>
+        
+        <div class="flex gap-3">
+          <button id="restart-btn" class="bg-white hover:bg-gray-100 text-dark/80 hover:text-dark py-2 px-6 rounded-lg shadow transition-all duration-300 flex items-center btn-hover">
+            <i class="fa fa-refresh mr-2"></i>
+            <span>重新开始</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- 画布 -->
+      <canvas id="drawing-canvas" class="w-full aspect-square grid-pattern bg-neutral/50" style="background-size: 20px 20px;"></canvas>
+    </div>
+    
+    <!-- 游戏说明 -->
+    <div class="mt-4 bg-white rounded-xl p-4 shadow-sm">
+      <div class="flex items-center mb-2">
+        <i class="fa fa-lightbulb-o text-primary mr-2"></i>
+        <span class="font-medium">绘制技巧:</span>
+      </div>
+      <ul class="text-sm text-dark/70 space-y-1">
+        <li class="flex items-start">
+          <i class="fa fa-circle text-xs mt-1 mr-2 text-primary"></i>
+          <span>尝试从中心向外绘制均匀的圆形</span>
+        </li>
+        <li class="flex items-start">
+          <i class="fa fa-circle text-xs mt-1 mr-2 text-primary"></i>
+          <span>保持稳定的手速有助于提高对称性得分</span>
+        </li>
+        <li class="flex items-start">
+          <i class="fa fa-circle text-xs mt-1 mr-2 text-primary"></i>
+          <span>绘制完整闭合的圆形可以获得更高分数</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 结果弹窗 -->
+  <div id="result-modal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 transform transition-all duration-500 scale-95">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl font-bold text-primary mb-2">你的成绩</h2>
+        <div class="w-16 h-1 bg-primary/50 mx-auto rounded-full"></div>
+      </div>
+      
+      <div class="flex justify-center mb-8">
+        <div class="relative w-40 h-40 flex items-center justify-center">
+          <div id="score-circle" class="absolute w-full h-full rounded-full border-8 border-primary/20"></div>
+          <div id="score-progress" class="absolute w-full h-full rounded-full border-8 border-primary border-t-transparent border-r-transparent border-b-transparent transform -rotate-90 transition-all duration-1000"></div>
+          <span id="final-score" class="text-5xl font-bold text-primary">0</span>
+          <span class="absolute bottom-0 text-dark/70">分</span>
+        </div>
+      </div>
+      
+      <div class="space-y-3 mb-6">
+        <div class="flex justify-between items-center">
+          <span class="text-dark/70">圆度:</span>
+          <span id="roundness-value" class="font-medium">0%</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div id="roundness-bar" class="bg-primary h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
+        </div>
+        
+        <div class="flex justify-between items-center">
+          <span class="text-dark/70">对称性:</span>
+          <span id="symmetry-value" class="font-medium">0%</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div id="symmetry-bar" class="bg-secondary h-2 rounded-full transition-all duration-700" style="width: 0%"></div>
+        </div>
+      </div>
+      
+      <div class="flex gap-3">
+        <button id="play-again-btn" class="flex-1 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
+          <span>再玩一次</span>
+          <i class="fa fa-repeat ml-2"></i>
+        </button>
+        <a href="./index" class="flex-1 py-3 bg-backBtn hover:bg-backBtn/90 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center">
+          <i class="fa fa-home mr-2"></i>
+          <span>返回主页</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 获取DOM元素
+      const startScreen = document.getElementById('start-screen');
+      const gameContainer = document.getElementById('game-container');
+      const startBtn = document.getElementById('start-btn');
+      const restartBtn = document.getElementById('restart-btn');
+      const playAgainBtn = document.getElementById('play-again-btn');
+      const drawingCanvas = document.getElementById('drawing-canvas');
+      const scoreDisplay = document.getElementById('score-display');
+      const resultModal = document.getElementById('result-modal');
+      const finalScore = document.getElementById('final-score');
+      const scoreProgress = document.getElementById('score-progress');
+      const roundnessValue = document.getElementById('roundness-value');
+      const symmetryValue = document.getElementById('symmetry-value');
+      const roundnessBar = document.getElementById('roundness-bar');
+      const symmetryBar = document.getElementById('symmetry-bar');
+      
+      // 设置画布尺寸
+      function resizeCanvas() {
+        const container = gameContainer.querySelector('.relative');
+        const width = container.clientWidth;
+        drawingCanvas.width = width;
+        drawingCanvas.height = width; // 保持正方形
+      }
+      
+      window.addEventListener('resize', resizeCanvas);
+      
+      // 初始化画布尺寸
+      setTimeout(resizeCanvas, 100);
+      
+      // 获取绘图上下文
+      const ctx = drawingCanvas.getContext('2d');
+      
+      // 游戏状态变量
+      let isDrawing = false;
+      let startX = 0;
+      let startY = 0;
+      let currentPath = [];
+      let allPaths = [];
+      let isGameActive = false;
+      
+      // 开始游戏
+      function startGame() {
+        startScreen.classList.add('hidden');
+        gameContainer.classList.remove('opacity-0', 'pointer-events-none');
+        resizeCanvas();
+        isGameActive = true;
+      }
+      
+      // 重置游戏
+      function resetGame() {
+        ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+        currentPath = [];
+        allPaths = [];
+        scoreDisplay.textContent = '0';
+        isGameActive = true;
+        drawGrid();
+      }
+      
+      // 显示结果
+      function showResult(score, roundness, symmetry) {
+        isGameActive = false;
+        
+        // 设置分数和进度条
+        finalScore.textContent = Math.round(score);
+        scoreDisplay.textContent = Math.round(score);
+        
+        // 计算进度条角度
+        const angle = (score / 100) * 360;
+        scoreProgress.style.transform = `rotate(${(angle - 90)}deg)`;
+        
+        // 设置圆度和对称性
+        roundnessValue.textContent = `${Math.round(roundness * 100)}%`;
+        symmetryValue.textContent = `${Math.round(symmetry * 100)}%`;
+        
+        // 设置进度条宽度
+        roundnessBar.style.width = `${Math.round(roundness * 100)}%`;
+        symmetryBar.style.width = `${Math.round(symmetry * 100)}%`;
+        
+        // 显示结果弹窗
+        setTimeout(() => {
+          resultModal.classList.remove('opacity-0', 'pointer-events-none');
+          resultModal.querySelector('div').classList.remove('scale-95');
+          resultModal.querySelector('div').classList.add('scale-100');
+        }, 500);
+      }
+      
+      // 隐藏结果弹窗
+      function hideResultModal() {
+        resultModal.classList.add('opacity-0', 'pointer-events-none');
+        resultModal.querySelector('div').classList.remove('scale-100');
+        resultModal.querySelector('div').classList.add('scale-95');
+      }
+      
+      // 计算圆度
+      function calculateRoundness(points) {
+        if (points.length < 3) return 0;
+        
+        // 计算中心点
+        const center = {
+          x: points.reduce((sum, p) => sum + p.x, 0) / points.length,
+          y: points.reduce((sum, p) => sum + p.y, 0) / points.length
+        };
+        
+        // 计算平均半径
+        const radii = points.map(p => Math.sqrt(
+          Math.pow(p.x - center.x, 2) + Math.pow(p.y - center.y, 2)
+        ));
+        const avgRadius = radii.reduce((sum, r) => sum + r, 0) / radii.length;
+        
+        // 计算方差
+        const variance = radii.reduce((sum, r) => sum + Math.pow(r - avgRadius, 2), 0) / radii.length;
+        const stdDev = Math.sqrt(variance);
+        
+        // 圆度评分 (标准差越小，圆度越高)
+        const maxDeviation = avgRadius * 0.2; // 最大允许偏差为平均半径的20%
+        const roundness = Math.max(0, 1 - (stdDev / maxDeviation));
+        
+        return roundness;
+      }
+      
+      // 计算对称性
+      function calculateSymmetry(points) {
+        if (points.length < 3) return 0;
+        
+        // 计算中心点
+        const center = {
+          x: points.reduce((sum, p) => sum + p.x, 0) / points.length,
+          y: points.reduce((sum, p) => sum + p.y, 0) / points.length
+        };
+        
+        // 计算每个点相对于中心点的角度和距离
+        const pointData = points.map(p => {
+          const dx = p.x - center.x;
+          const dy = p.y - center.y;
+          return {
+            angle: Math.atan2(dy, dx),
+            distance: Math.sqrt(dx * dx + dy * dy)
+          };
+        });
+        
+        // 按角度排序
+        pointData.sort((a, b) => a.angle - b.angle);
+        
+        // 计算对称性 (比较相对点的距离差异)
+        let symmetryScore = 0;
+        const numPoints = pointData.length;
+        
+        for (let i = 0; i < numPoints; i++) {
+          // 找到相对点 (大约180度对面的点)
+          const oppositeIndex = Math.floor((i + numPoints / 2) % numPoints);
+          const distanceDiff = Math.abs(pointData[i].distance - pointData[oppositeIndex].distance);
+          const maxDistance = Math.max(pointData[i].distance, pointData[oppositeIndex].distance);
+          
+          // 差异越小，对称性越高
+          if (maxDistance > 0) {
+            symmetryScore += 1 - (distanceDiff / maxDistance);
+          }
+        }
+        
+        return symmetryScore / numPoints;
+      }
+      
+      // 计算最终得分
+      function calculateScore(points) {
+        const roundness = calculateRoundness(points);
+        const symmetry = calculateSymmetry(points);
+        
+        // 最终得分是圆度和对称性的平均值
+        const score = (roundness + symmetry) / 2 * 100;
+        
+        return { score, roundness, symmetry };
+      }
+      
+      // 绘制网格背景
+      function drawGrid() {
+        ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+        
+        // 绘制所有已保存的路径
+        allPaths.forEach(path => {
+          ctx.beginPath();
+          ctx.moveTo(path[0].x, path[0].y);
+          for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+          }
+          ctx.strokeStyle = '#3B82F6';
+          ctx.lineWidth = 3;
+          ctx.stroke();
+        });
+      }
+      
+      // 获取鼠标/触摸位置
+      function getPointerPosition(event) {
+        const rect = drawingCanvas.getBoundingClientRect();
+        if (event.type.includes('touch')) {
+          return {
+            x: event.touches[0].clientX - rect.left,
+            y: event.touches[0].clientY - rect.top
+          };
+        } else {
+          return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+          };
+        }
+      }
+      
+      // 开始绘制
+      function startDraw(x, y) {
+        if (!isGameActive) return;
+        
+        isDrawing = true;
+        startX = x;
+        startY = y;
+        currentPath = [{ x: startX, y: startY }];
+        
+        // 清除之前的路径
+        ctx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+        drawGrid();
+      }
+      
+      // 绘制过程中
+      function drawTo(x, y) {
+        if (!isDrawing) return;
+        
+        currentPath.push({ x, y });
+        
+        // 绘制当前路径
+        drawGrid();
+        
+        ctx.beginPath();
+        ctx.moveTo(currentPath[0].x, currentPath[0].y);
+        for (let i = 1; i < currentPath.length; i++) {
+          ctx.lineTo(currentPath[i].x, currentPath[i].y);
+        }
+        ctx.strokeStyle = '#3B82F6';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      
+      // 结束绘制
+      function endDraw() {
+        if (!isDrawing) return;
+        
+        isDrawing = false;
+        
+        if (currentPath.length > 10) { // 确保有足够的点
+          allPaths.push([...currentPath]);
+          
+          // 计算得分
+          const { score, roundness, symmetry } = calculateScore(currentPath);
+          
+          // 显示得分
+          showResult(score, roundness, symmetry);
+        }
+      }
+      
+      // 鼠标事件处理
+      drawingCanvas.addEventListener('mousedown', (e) => {
+        const pos = getPointerPosition(e);
+        startDraw(pos.x, pos.y);
+      });
+      
+      drawingCanvas.addEventListener('mousemove', (e) => {
+        const pos = getPointerPosition(e);
+        drawTo(pos.x, pos.y);
+      });
+      
+      drawingCanvas.addEventListener('mouseup', endDraw);
+      drawingCanvas.addEventListener('mouseout', endDraw);
+      
+      // 触摸事件处理
+      drawingCanvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const pos = getPointerPosition(e);
+        startDraw(pos.x, pos.y);
+      });
+      
+      drawingCanvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const pos = getPointerPosition(e);
+        drawTo(pos.x, pos.y);
+      });
+      
+      drawingCanvas.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        endDraw();
+      });
+      
+      // 按钮事件监听
+      startBtn.addEventListener('click', startGame);
+      restartBtn.addEventListener('click', resetGame);
+      playAgainBtn.addEventListener('click', () => {
+        hideResultModal();
+        setTimeout(resetGame, 300);
+      });
+      
+      // 初始绘制网格
+      drawGrid();
+    });
+  </script>
+</body>
+</html>

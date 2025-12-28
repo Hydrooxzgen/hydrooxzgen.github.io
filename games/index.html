@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAME START</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Orbitron', 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #0a0a2a, #000000);
+            color: #00ffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 背景科技感效果 */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.8), transparent);
+            animation: scan 4s linear infinite;
+            z-index: -1;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: #00ffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* 标题样式 */
+        .header {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            background-color: rgba(0, 20, 40, 0.7);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5),
+                        inset 0 0 20px rgba(0, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 30%,
+                rgba(0, 255, 255, 0.1) 50%,
+                transparent 70%
+            );
+            transform: rotate(30deg);
+            animation: shine 8s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            background: linear-gradient(to right, #00ffff, #00aaff, #00ffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #88ffff;
+            letter-spacing: 2px;
+        }
+
+        /* 按钮网格 */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* 按钮样式 */
+        .game-button {
+            background: linear-gradient(to bottom, rgba(0, 30, 60, 0.9), rgba(0, 10, 30, 0.9));
+            border: 2px solid #00aaff;
+            border-radius: 10px;
+            padding: 2rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+            color: #00ffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            transition: left 0.7s;
+        }
+
+        .game-button:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 100, 255, 0.4),
+                        0 0 30px rgba(0, 150, 255, 0.3),
+                        inset 0 0 15px rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+        }
+
+        .game-button:hover::before {
+            left: 100%;
+        }
+
+        .game-button:active {
+            transform: translateY(-5px);
+            transition: transform 0.1s;
+        }
+
+        .game-button i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        .game-button h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .game-button p {
+            font-size: 0.9rem;
+            color: #88ffff;
+            line-height: 1.4;
+        }
+
+        /* 按钮特定颜色 */
+        .home-btn {
+            border-color: #00ffaa;
+        }
+
+        .home-btn i {
+            color: #00ffaa;
+        }
+
+        .home-btn:hover {
+            box-shadow: 0 15px 30px rgba(0, 255, 170, 0.4),
+                        0 0 30px rgba(0, 255, 170, 0.3),
+                        inset 0 0 15px rgba(0, 255, 170, 0.2);
+        }
+
+        .space-btn {
+            border-color: #0099ff;
+        }
+
+        .space-btn i {
+            color: #0099ff;
+        }
+
+        .space-btn:hover {
+            box-shadow: 0 15px 30px rgba(0, 153, 255, 0.4),
+                        0 0 30px rgba(0, 153, 255, 0.3),
+                        inset 0 0 15px rgba(0, 153, 255, 0.2);
+        }
+
+        .gokumu-btn {
+            border-color: #ffaa00;
+        }
+
+        .gokumu-btn i {
+            color: #ffaa00;
+        }
+
+        .gokumu-btn:hover {
+            box-shadow: 0 15px 30px rgba(255, 170, 0, 0.4),
+                        0 0 30px rgba(255, 170, 0, 0.3),
+                        inset 0 0 15px rgba(255, 170, 0, 0.2);
+        }
+
+        .paint-btn {
+            border-color: #ff00aa;
+        }
+
+        .paint-btn i {
+            color: #ff00aa;
+        }
+
+        .paint-btn:hover {
+            box-shadow: 0 15px 30px rgba(255, 0, 170, 0.4),
+                        0 0 30px rgba(255, 0, 170, 0.3),
+                        inset 0 0 15px rgba(255, 0, 170, 0.2);
+        }
+
+        .snake-btn {
+            border-color: #aa00ff;
+        }
+
+        .snake-btn i {
+            color: #aa00ff;
+        }
+
+        .snake-btn:hover {
+            box-shadow: 0 15px 30px rgba(170, 0, 255, 0.4),
+                        0 0 30px rgba(170, 0, 255, 0.3),
+                        inset 0 0 15px rgba(170, 0, 255, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .game-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* 底部信息 */
+        .footer {
+            margin-top: 4rem;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: #0088cc;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .footer p {
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景科技网格 -->
+    <div class="grid-background"></div>
+    <div class="scanline"></div>
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <!-- 主内容容器 -->
+    <div class="container">
+        <!-- 标题区域 -->
+        <header class="header">
+            <h1>GAME START!</h1>
+            <p>SELECT YOUR GAME</p>
+        </header>
+
+        <!-- 游戏按钮网格 -->
+        <div class="game-grid">
+            <!-- 主页按钮 -->
+            <a href="/" class="game-button home-btn">
+                <i class="fas fa-home"></i>
+                <h2>返回主页</h2>
+                <p>回到主控制面板</p>
+            </a>
+
+            <!-- 太空战机按钮 -->
+            <a href="./spacePlane" class="game-button space-btn">
+                <i class="fas fa-space-shuttle"></i>
+                <h2>太空战机</h2>
+                <p>穿越星际，对抗外星入侵者</p>
+            </a>
+
+            <!-- 五子棋按钮 -->
+            <a href="./gomoku" class="game-button gokumu-btn">
+                <i class="fas fa-gamepad"></i>
+                <h2>五子棋</h2>
+                <p>经典策略游戏，挑战你的思维</p>
+            </a>
+
+            <!-- 画个圆按钮 -->
+            <a href="./paintARound" class="game-button paint-btn">
+                <i class="fas fa-paint-brush"></i>
+                <h2>画个圆</h2>
+                <p>创意绘画，释放你的艺术天赋</p>
+            </a>
+
+            <!-- 贪吃蛇按钮 -->
+            <a href="./snakeGame" class="game-button snake-btn">
+                <i class="fas fa-snake"></i>
+                <h2>贪吃蛇</h2>
+                <p>经典街机游戏，挑战你的反应速度</p>
+            </a>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>科技游戏中心 © 2023 | 沉浸式游戏体验</p>
+        </footer>
+    </div>
+
+    <script>
+        // 创建漂浮元素
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            const count = 30;
+            
+            for (let i = 0; i < count; i++) {
+                const element = document.createElement('div');
+                element.classList.add('floating-element');
+                
+                // 随机位置
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // 随机大小
+                const size = Math.random() * 3 + 1;
+                
+                // 随机动画
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 10;
+                
+                element.style.left = `${x}%`;
+                element.style.top = `${y}%`;
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.animation = `float ${duration}s ease-in-out ${delay}s infinite alternate`;
+                
+                container.appendChild(element);
+            }
+            
+            // 添加CSS动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+                    100% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) scale(${Math.random() * 0.5 + 0.5}); opacity: 0.3; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // 添加按钮交互效果
+        function addButtonEffects() {
+            const buttons = document.querySelectorAll('.game-button');
+            
+            buttons.forEach(button => {
+                // 鼠标悬停时的声音效果（模拟）
+                button.addEventListener('mouseenter', () => {
+                    // 在实际应用中，这里可以添加音效
+                    button.style.transform = 'translateY(-10px) scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    button.style.transform = 'translateY(0) scale(1)';
+                });
+                
+                // 点击效果
+                button.addEventListener('click', function(e) {
+                    // 在实际应用中，这里可以添加点击音效和页面跳转
+                    console.log(`导航到: ${this.getAttribute('href')}`);
+                    
+                    // 添加点击动画
+                    this.style.transform = 'translateY(-5px) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-10px) scale(1.05)';
+                    }, 100);
+                });
+            });
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingElements();
+            addButtonEffects();
+            
+            // 添加标题动画
+            const header = document.querySelector('.header h1');
+            let hue = 0;
+            setInterval(() => {
+                hue = (hue + 1) % 360;
+                header.style.background = `linear-gradient(to right, hsl(${hue}, 100%, 50%), hsl(${(hue + 60) % 360}, 100%, 50%), hsl(${(hue + 120) % 360}, 100%, 50%))`;
+                header.style.webkitBackgroundClip = 'text';
+                header.style.backgroundClip = 'text';
+            }, 50);
+        });
+    </script>
+</body>
+</html>
