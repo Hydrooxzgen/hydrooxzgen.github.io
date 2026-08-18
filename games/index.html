@@ -208,6 +208,20 @@
         }
 
         /* 按钮特定颜色 */
+        .project-btn {
+            border-color: #ffcc00;
+        }
+
+        .project-btn i {
+            color: #ffcc00;
+        }
+
+        .project-btn:hover {
+            box-shadow: 0 15px 30px rgba(255, 204, 0, 0.4),
+                        0 0 30px rgba(255, 204, 0, 0.3),
+                        inset 0 0 15px rgba(255, 204, 0, 0.2);
+        }
+
         .home-btn {
             border-color: #00ffaa;
         }
@@ -329,6 +343,13 @@
                 <i class="fas fa-home"></i>
                 <h2>返回主页</h2>
                 <p>回到主控制面板</p>
+            </a>
+
+            <!-- 我的项目按钮 -->
+            <a href="../projects" class="game-button project-btn">
+                <i class="fas fa-folder-open"></i>
+                <h2>我的项目</h2>
+                <p>浏览我的开源项目</p>
             </a>
 
             <!-- 太空战机按钮 -->

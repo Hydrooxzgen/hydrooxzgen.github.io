@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CanApp - 项目介绍</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .project-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #ffd93d, #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .project-icon i {
+            font-size: 44px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 15px;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #6e8efb;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 i {
+            font-size: 1.4rem;
+        }
+
+        .card p, .card li {
+            color: #555;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .feature-list li {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border-left: 4px solid #6e8efb;
+        }
+
+        .feature-list li i {
+            color: #6e8efb;
+            font-size: 1.2rem;
+            margin-top: 3px;
+        }
+
+        .lang-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .lang-table th, .lang-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .lang-table th {
+            background: #f8f9ff;
+            color: #6e8efb;
+        }
+
+        .lang-table td code {
+            background: #f0f0f5;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .step h3 {
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .code-block {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 12px;
+            padding: 18px 20px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-github {
+            background: #24292e;
+            color: white;
+        }
+
+        .btn-white {
+            background: white;
+            color: #6e8efb;
+        }
+
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            padding: 10px 0 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="project-icon">
+                <i class="fas fa-cube"></i>
+            </div>
+            <h1>CanApp</h1>
+            <p class="tagline">一个基于 Python + Tkinter 的多功能 Windows 桌面工具箱</p>
+            <div class="badges">
+                <span class="badge"><i class="fab fa-python"></i> Python 3.13</span>
+                <span class="badge"><i class="fas fa-window-maximize"></i> Tkinter</span>
+                <span class="badge"><i class="fas fa-language"></i> 三语支持</span>
+                <span class="badge"><i class="fas fa-lock"></i> 本地用户系统</span>
+            </div>
+        </header>
+
+        <div class="actions">
+            <a href="https://github.com/Hydrooxzgen/CanApp" target="_blank" class="btn btn-github">
+                <i class="fab fa-github"></i> 查看 GitHub 仓库
+            </a>
+            <a href="https://github.com/Hydrooxzgen/CanApp/releases" target="_blank" class="btn btn-white">
+                <i class="fas fa-download"></i> 下载 Release
+            </a>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-info-circle"></i> 项目简介</h2>
+            <p>
+                <strong>CanApp</strong> 是一个开箱即用的 Windows 桌面应用合集，将多个实用小工具整合到一个简洁的图形界面中。
+                项目基于 Python 标准库 <strong>Tkinter</strong> 开发，无需复杂的运行时环境，内置
+                <strong>多语言支持</strong>（简体中文 / 繁体中文 / English）与<strong>本地用户系统</strong>，
+                界面文字可实时切换刷新，适合日常快速调用的桌面场景。
+            </p>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-star"></i> 核心特性</h2>
+            <ul class="feature-list">
+                <li>
+                    <i class="fas fa-window-maximize"></i>
+                    <span>基于 Tkinter 的轻量图形界面，单文件主程序，开箱即用</span>
+                </li>
+                <li>
+                    <i class="fas fa-language"></i>
+                    <span>内置简中 / 繁中 / 英文三语切换，界面文字实时刷新</span>
+                </li>
+                <li>
+                    <i class="fas fa-users"></i>
+                    <span>本地用户系统，用户数据存储于本机 UserFiles 目录</span>
+                </li>
+                <li>
+                    <i class="fas fa-toolbox"></i>
+                    <span>整合多种实用小工具，随取随用</span>
+                </li>
+                <li>
+                    <i class="fas fa-box"></i>
+                    <span>提供 PyInstaller 打包脚本与 Inno Setup 安装包脚本</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>内置测试套件与 i18n 校验工具，保证翻译键同步</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-globe"></i> 多语言支持</h2>
+            <p>内置三语切换，语言文件位于 <code>lang/</code> 目录，格式为 JSON：</p>
+            <table class="lang-table">
+                <tr>
+                    <th>语言代码</th>
+                    <th>语言</th>
+                    <th>说明</th>
+                </tr>
+                <tr>
+                    <td><code>zh_CN</code></td>
+                    <td>简体中文</td>
+                    <td>默认语言</td>
+                </tr>
+                <tr>
+                    <td><code>zh_TW</code></td>
+                    <td>繁體中文</td>
+                    <td>繁体中文</td>
+                </tr>
+                <tr>
+                    <td><code>en_US</code></td>
+                    <td>English</td>
+                    <td>英语</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-rocket"></i> 安装与使用</h2>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div>
+                    <h3>方式一：安装包（推荐）</h3>
+                    <p>前往 <a href="https://github.com/Hydrooxzgen/CanApp/releases" target="_blank">GitHub Releases</a>
+                    下载 <code>CanApp_Setup_x.x.x.exe</code>，双击安装即可。仅支持 Windows 系统。</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div>
+                    <h3>方式二：从源码运行</h3>
+                    <p>需要 <strong>Python 3.13+</strong>（自带 Tkinter）：</p>
+                    <div class="code-block">
+                        # 安装依赖<br>
+                        py -m pip install requests pythonping<br><br>
+                        # 运行<br>
+                        py CanApp.py
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-folder-tree"></i> 项目结构</h2>
+            <div class="code-block">
+                CanApp/<br>
+                ├── CanApp.py                # 主程序（单文件应用）<br>
+                ├── CanApp.spec              # PyInstaller 打包配置<br>
+                ├── CanApp_installer.iss     # Inno Setup 安装脚本<br>
+                ├── lang/                    # 多语言翻译（JSON）<br>
+                │   ├── zh_CN.json           # 简中翻译（默认）<br>
+                │   ├── zh_TW.json           # 繁中翻译<br>
+                │   └── en_US.json           # 英语翻译<br>
+                ├── UserFiles/               # 用户数据（运行时生成）<br>
+                ├── dev/                     # 测试与调试工具<br>
+                └── how_to_releaseArelease.txt # 发布流程
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="../" class="btn btn-white">
+                <i class="fas fa-arrow-left"></i> 返回项目列表
+            </a>
+            <a href="../../" class="btn btn-white">
+                <i class="fas fa-home"></i> 返回主页
+            </a>
+        </div>
+
+        <footer>
+            <p>© 2026 我的GitHub主页 | 由GitHub Pages托管</p>
+        </footer>
+    </div>
+</body>
+</html>
