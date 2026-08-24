@@ -921,6 +921,11 @@
                     <strong>🔒 安全说明：</strong>Token 仅保存在你浏览器的 localStorage 中，不会上传到任何服务器。<br>
                     每次 API 请求仅发送到 <code>api.github.com</code>。<br>
                     如不放心，可随时点击「清除 Token」删除。
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <div class="logo">
@@ -1063,7 +1068,7 @@
             // Validate token
             try {
                 const res = await fetch(`${API_BASE}/user`, {
-                    headers: authHeaders()
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (res.ok) {
                     localStorage.setItem('gh_token', token);
