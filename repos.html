@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Repos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Floating home button */
+        .home-fab {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            z-index: 100;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .home-fab:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logo i {
+            font-size: 40px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 16px 28px;
+            text-align: center;
+            min-width: 130px;
+            transition: transform 0.3s;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 4px;
+        }
+
+        /* Search & Filter */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-box input:focus {
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #6e8efb;
+            border-color: white;
+        }
+
+        .sort-select {
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            padding-right: 35px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        .sort-select option {
+            color: #333;
+            background: white;
+        }
+
+        /* Repo Grid */
+        .repo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 10px;
+        }
+
+        .repo-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #6e8efb, #a777e3);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .repo-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .repo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .repo-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .repo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .repo-icon i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .repo-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            word-break: break-word;
+        }
+
+        .repo-name a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .repo-name a:hover {
+            color: #6e8efb;
+        }
+
+        .repo-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            flex: 1;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .repo-desc.no-desc {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .repo-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .meta-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .meta-lang {
+            background: rgba(110, 142, 251, 0.1);
+            color: #6e8efb;
+        }
+
+        .meta-star {
+            background: rgba(255, 193, 7, 0.12);
+            color: #e6a817;
+        }
+
+        .meta-fork {
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+
+        .meta-issue {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .repo-lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .repo-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            border-top: 1px solid #eee;
+        }
+
+        .repo-updated {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .repo-readme-btn {
+            font-size: 0.85rem;
+            color: #6e8efb;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 4px 0;
+            transition: color 0.3s;
+        }
+
+        .repo-readme-btn:hover {
+            color: #a777e3;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* Error */
+        .error-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-box i {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 16px;
+        }
+
+        .error-box h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .error-box p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .retry-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Empty */
+        .empty-state {
+            text-align: center;
+            padding: 60px 0;
+            color: white;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+
+        /* README Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h2 {
+            font-size: 1.3rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header h2 i {
+            color: #6e8efb;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            color: #666;
+        }
+
+        .modal-close:hover {
+            background: #e0e0e0;
+        }
+
+        .modal-body {
+            padding: 28px;
+            overflow-y: auto;
+            flex: 1;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .modal-body h1, .modal-body h2, .modal-body h3 {
+            color: #333;
+            margin: 20px 0 10px;
+        }
+
+        .modal-body h1 { font-size: 1.6rem; }
+        .modal-body h2 { font-size: 1.35rem; }
+        .modal-body h3 { font-size: 1.15rem; }
+
+        .modal-body p {
+            margin-bottom: 12px;
+        }
+
+        .modal-body code {
+            background: #f4f4f4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e74c3c;
+        }
+
+        .modal-body pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 16px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .modal-body pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        .modal-body a {
+            color: #6e8efb;
+            text-decoration: none;
+        }
+
+        .modal-body a:hover {
+            text-decoration: underline;
+        }
+
+        .modal-body img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .modal-body ul, .modal-body ol {
+            padding-left: 24px;
+            margin-bottom: 12px;
+        }
+
+        .modal-body li {
+            margin-bottom: 6px;
+        }
+
+        .modal-body blockquote {
+            border-left: 4px solid #6e8efb;
+            padding: 10px 20px;
+            margin: 16px 0;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+            color: #555;
+        }
+
+        .modal-readme-loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .modal-readme-loading .spinner {
+            margin-bottom: 16px;
+        }
+
+        /* Back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 40px auto 20px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            border: 2px solid white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            padding-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .repo-grid { grid-template-columns: 1fr; }
+            .stats-bar { gap: 12px; }
+            .stat-item { padding: 12px 18px; min-width: 100px; }
+            .stat-number { font-size: 1.5rem; }
+            .modal { max-height: 90vh; border-radius: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <a href="./" class="home-fab" title="返回主页"><i class="fas fa-home"></i></a>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fab fa-github"></i>
+            </div>
+            <h1>我的仓库</h1>
+            <p class="tagline">我的所有 GitHub 公开仓库，含 Star / Fork 与 README</p>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats-bar" id="statsBar" style="display:none;">
+            <div class="stat-item">
+                <span class="stat-number" id="statRepos">-</span>
+                <span class="stat-label">仓库</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="statStars">-</span>
+                <span class="stat-label">总 Star</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="statForks">-</span>
+                <span class="stat-label">总 Fork</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="statLangs">-</span>
+                <span class="stat-label">编程语言</span>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls" id="controls" style="display:none;">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="搜索仓库名称或描述...">
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="starred">有 Star</button>
+                <button class="filter-btn" data-filter="forked">有 Fork</button>
+                <button class="filter-btn" data-filter="has-readme">有 README</button>
+            </div>
+            <select class="sort-select" id="sortSelect">
+                <option value="updated">最近更新</option>
+                <option value="stars">Star 最多</option>
+                <option value="forks">Fork 最多</option>
+                <option value="name">名称 A-Z</option>
+                <option value="created">最新创建</option>
+            </select>
+        </div>
+
+        <!-- Repo Grid -->
+        <div class="repo-grid" id="repoGrid"></div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p class="loading-text">Loading...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="errorBox" style="display:none;"></div>
+
+        <div style="text-align:center;">
+            <a href="./" class="back-btn">
+                <i class="fas fa-arrow-left"></i> 返回主页
+            </a>
+        </div>
+
+        <footer>
+            <p>© 2026 我的GitHub主页 | 由GitHub Pages托管</p>
+        </footer>
+    </div>
+
+    <!-- README Modal -->
+    <div class="modal-overlay" id="readmeModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fab fa-github"></i> <span id="modalTitle">README</span></h2>
+                <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="modal-readme-loading">
+                    <div class="spinner"></div>
+                    <p>正在加载 README...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GITHUB_USER = 'Hydrooxzgen';
+        const API_BASE = 'https://api.github.com';
+
+        // Language colors
+        const LANG_COLORS = {
+            'JavaScript': '#f1e05a', 'TypeScript': '#3178c6', 'Python': '#3572A5',
+            'Java': '#b07219', 'C': '#555555', 'C++': '#f34b7d', 'C#': '#178600',
+            'Go': '#00ADD8', 'Rust': '#dea584', 'Ruby': '#701516', 'PHP': '#4F5D95',
+            'Swift': '#F05138', 'Kotlin': '#A97BFF', 'Dart': '#00B4AB',
+            'HTML': '#e34c26', 'CSS': '#563d7c', 'Shell': '#89e051',
+            'Lua': '#000080', 'Vue': '#41b883', 'Svelte': '#ff3e00',
+            'Jupyter Notebook': '#DA5B0B', 'R': '#198CE7', 'Scala': '#c22d40',
+            'Haskell': '#5e5086', 'Elixir': '#6e4a7e', 'Zig': '#ec915c',
+            'MDX': '#fcb32c', 'Vue.js': '#41b883'
+        };
+
+        let allRepos = [];
+        let readmeCache = {};
+        let currentFilter = 'all';
+
+        // Fetch all repos (handle pagination)
+        async function fetchAllRepos() {
+            let page = 1;
+            let repos = [];
+            while (true) {
+                const res = await fetch(`${API_BASE}/users/${GITHUB_USER}/repos?per_page=100&page=${page}&sort=updated`);
+                if (!res.ok) throw new Error(`GitHub API 错误: ${res.status}`);
+                const data = await res.json();
+                if (data.length === 0) break;
+                repos = repos.concat(data);
+                if (data.length < 100) break;
+                page++;
+            }
+            return repos;
+        }
+
+        // Check if repo has README
+        async function checkReadme(repoName) {
+            if (readmeCache[repoName] !== undefined) return readmeCache[repoName];
+            try {
+                const res = await fetch(`${API_BASE}/repos/${GITHUB_USER}/${repoName}/readme`, {
+                    headers: { 'Accept': 'application/vnd.github.v3.raw' }
+                });
+                if (res.ok) {
+                    const text = await res.text();
+                    readmeCache[repoName] = text;
+                    return text;
+                }
+            } catch (e) {}
+            readmeCache[repoName] = null;
+            return null;
+        }
+
+        // Render stats
+        function renderStats(repos) {
+            const totalStars = repos.reduce((s, r) => s + r.stargazers_count, 0);
+            const totalForks = repos.reduce((s, r) => s + r.forks_count, 0);
+            const langs = new Set(repos.map(r => r.language).filter(Boolean));
+            document.getElementById('statRepos').textContent = repos.length;
+            document.getElementById('statStars').textContent = totalStars;
+            document.getElementById('statForks').textContent = totalForks;
+            document.getElementById('statLangs').textContent = langs.size;
+            document.getElementById('statsBar').style.display = 'flex';
+        }
+
+        // Format date
+        function timeAgo(dateStr) {
+            const now = new Date();
+            const d = new Date(dateStr);
+            const diff = Math.floor((now - d) / 1000);
+            if (diff < 60) return '刚刚';
+            if (diff < 3600) return `${Math.floor(diff / 60)} 分钟前`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)} 小时前`;
+            if (diff < 2592000) return `${Math.floor(diff / 86400)} 天前`;
+            if (diff < 31536000) return `${Math.floor(diff / 2592000)} 个月前`;
+            return `${Math.floor(diff / 31536000)} 年前`;
+        }
+
+        // Render a single repo card
+        function renderCard(repo, index) {
+            const langColor = LANG_COLORS[repo.language] || '#999';
+            const desc = repo.description
+                ? `<p class="repo-desc">${escapeHtml(repo.description)}</p>`
+                : `<p class="repo-desc no-desc">暂无描述</p>`;
+
+            return `
+                <div class="repo-card" style="animation-delay: ${index * 0.05}s" data-name="${repo.name}" data-desc="${escapeHtml(repo.description || '')}" data-stars="${repo.stargazers_count}" data-forks="${repo.forks_count}" data-updated="${repo.updated_at}" data-created="${repo.created_at}">
+                    <div class="repo-card-header">
+                        <div class="repo-icon"><i class="fas fa-code-branch"></i></div>
+                        <div class="repo-name">
+                            <a href="${repo.html_url}" target="_blank" onclick="event.stopPropagation()">${escapeHtml(repo.name)}</a>
+                        </div>
+                    </div>
+                    ${desc}
+                    <div class="repo-meta">
+                        ${repo.language ? `<span class="meta-tag meta-lang"><span class="repo-lang-dot" style="background:${langColor}"></span>${repo.language}</span>` : ''}
+                        <span class="meta-tag meta-star"><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
+                        <span class="meta-tag meta-fork"><i class="fas fa-code-fork"></i> ${repo.forks_count}</span>
+                        ${repo.open_issues_count > 0 ? `<span class="meta-tag meta-issue"><i class="fas fa-circle-dot"></i> ${repo.open_issues_count}</span>` : ''}
+                    </div>
+                    <div class="repo-footer">
+                        <span class="repo-updated"><i class="fas fa-clock"></i> ${timeAgo(repo.updated_at)}</span>
+                        <button class="repo-readme-btn" onclick="event.stopPropagation(); openReadme('${escapeHtml(repo.name)}')">
+                            查看 README <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Filter & sort repos
+        function getFilteredRepos() {
+            let repos = [...allRepos];
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (query) {
+                repos = repos.filter(r =>
+                    r.name.toLowerCase().includes(query) ||
+                    (r.description && r.description.toLowerCase().includes(query)) ||
+                    (r.language && r.language.toLowerCase().includes(query))
+                );
+            }
+            if (currentFilter === 'starred') repos = repos.filter(r => r.stargazers_count > 0);
+            else if (currentFilter === 'forked') repos = repos.filter(r => r.forks_count > 0);
+            else if (currentFilter === 'has-readme') repos = repos.filter(r => readmeCache[r.name] !== null && readmeCache[r.name] !== undefined);
+
+            const sort = document.getElementById('sortSelect').value;
+            repos.sort((a, b) => {
+                switch (sort) {
+                    case 'stars': return b.stargazers_count - a.stargazers_count;
+                    case 'forks': return b.forks_count - a.forks_count;
+                    case 'name': return a.name.localeCompare(b.name);
+                    case 'created': return new Date(b.created_at) - new Date(a.created_at);
+                    default: return new Date(b.updated_at) - new Date(a.updated_at);
+                }
+            });
+            return repos;
+        }
+
+        function renderRepos() {
+            const grid = document.getElementById('repoGrid');
+            const repos = getFilteredRepos();
+            if (repos.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-search"></i>
+                        <h3>没有找到匹配的仓库</h3>
+                        <p>试试其他搜索关键词或筛选条件</p>
+                    </div>`;
+                return;
+            }
+            grid.innerHTML = repos.map((r, i) => renderCard(r, i)).join('');
+
+            // Pre-fetch README presence in background
+            repos.forEach(r => {
+                if (readmeCache[r.name] === undefined) {
+                    checkReadme(r.name).then(() => {
+                        // Re-filter if "has-readme" is active
+                        if (currentFilter === 'has-readme') renderRepos();
+                    });
+                }
+            });
+        }
+
+        // Open README modal
+        async function openReadme(repoName) {
+            const modal = document.getElementById('readmeModal');
+            const body = document.getElementById('modalBody');
+            const title = document.getElementById('modalTitle');
+
+            title.textContent = `${repoName} — README`;
+            body.innerHTML = `<div class="modal-readme-loading"><div class="spinner"></div><p>正在加载 README...</p></div>`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            try {
+                let content = readmeCache[repoName];
+                if (content === undefined) {
+                    content = await checkReadme(repoName);
+                }
+                if (content) {
+                    body.innerHTML = marked.parse(content);
+                } else {
+                    body.innerHTML = `
+                        <div style="text-align:center;padding:40px;color:#999;">
+                            <i class="fas fa-file-alt" style="font-size:3rem;margin-bottom:16px;display:block;"></i>
+                            <h3>该仓库暂无 README</h3>
+                        </div>`;
+                }
+            } catch (e) {
+                body.innerHTML = `
+                    <div style="text-align:center;padding:40px;color:#e74c3c;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;margin-bottom:16px;display:block;"></i>
+                        <h3>加载 README 失败</h3>
+                        <p>${e.message}</p>
+                    </div>`;
+            }
+        }
+
+        // Close modal
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('readmeModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        function closeModal() {
+            document.getElementById('readmeModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderRepos();
+            });
+        });
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', renderRepos);
+
+        // Sort
+        document.getElementById('sortSelect').addEventListener('change', renderRepos);
+
+        // Init
+        async function init() {
+            try {
+                allRepos = await fetchAllRepos();
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('controls').style.display = 'flex';
+                renderStats(allRepos);
+                renderRepos();
+            } catch (e) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('errorBox').style.display = 'block';
+                document.getElementById('errorBox').innerHTML = `
+                    <div class="error-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>加载失败</h3>
+                        <p>${e.message}</p>
+                        <button class="retry-btn" onclick="location.reload()"><i class="fas fa-redo"></i> 重试</button>
+                    </div>`;
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
