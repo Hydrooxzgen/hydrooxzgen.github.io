@@ -55,6 +55,216 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
         }
 
+        /* Settings button */
+        .settings-fab {
+            position: fixed;
+            top: 24px;
+            right: 82px;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-fab:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .settings-fab.has-token::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #2ecc71;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Settings panel */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .settings-overlay.active {
+            display: flex;
+        }
+
+        .settings-panel {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalIn 0.3s ease-out;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-header h2 {
+            font-size: 1.2rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-header h2 i {
+            color: #6e8efb;
+        }
+
+        .settings-body {
+            padding: 28px;
+        }
+
+        .settings-body label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .settings-body .hint {
+            font-size: 0.82rem;
+            color: #888;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .settings-body .hint a {
+            color: #6e8efb;
+            text-decoration: none;
+        }
+
+        .settings-body .hint a:hover {
+            text-decoration: underline;
+        }
+
+        .token-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .token-input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .token-input-group input:focus {
+            border-color: #6e8efb;
+        }
+
+        .token-input-group input::placeholder {
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .settings-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .settings-btn-primary {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+        }
+
+        .settings-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(110, 142, 251, 0.4);
+        }
+
+        .settings-btn-danger {
+            background: #fee;
+            color: #e74c3c;
+        }
+
+        .settings-btn-danger:hover {
+            background: #fdd;
+        }
+
+        .settings-status {
+            font-size: 0.85rem;
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .settings-status.success {
+            display: block;
+            background: #eafaf1;
+            color: #27ae60;
+        }
+
+        .settings-status.error {
+            display: block;
+            background: #fdecea;
+            color: #e74c3c;
+        }
+
+        .api-note {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 16px;
+            font-size: 0.82rem;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .api-note strong {
+            color: #333;
+        }
+
         /* Header */
         header {
             text-align: center;
@@ -683,6 +893,34 @@
 </head>
 <body>
     <a href="./" class="home-fab" title="返回主页"><i class="fas fa-home"></i></a>
+    <button class="settings-fab" id="settingsBtn" title="API 设置"><i class="fas fa-cog"></i></button>
+
+    <!-- Settings Panel -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-panel">
+            <div class="settings-header">
+                <h2><i class="fas fa-cog"></i> API 设置</h2>
+                <button class="modal-close" id="settingsClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="settings-body">
+                <label for="tokenInput">GitHub Personal Access Token</label>
+                <p class="hint">
+                    前往 <a href="https://github.com/settings/tokens" target="_blank">GitHub Token 设置</a> 创建一个 Fine-grained Token<br>
+                    权限只需勾选 <strong>Read-only</strong> 的 <strong>Contents</strong>（用于读取 README）<br>
+                    未设置 Token 时，未登录状态 API 限制为 60 次/小时；设置后为 5000 次/小时
+                </p>
+                <div class="token-input-group">
+                    <input type="password" id="tokenInput" placeholder="ghp_xxxx 或 github_pat_xxxx">
+                    <button class="settings-btn settings-btn-primary" id="tokenSave">保存</button>
+                </div>
+                <div class="settings-actions">
+                    <button class="settings-btn settings-btn-danger" id="tokenClear">清除 Token</button>
+                </div>
+                <div class="settings-status" id="tokenStatus"></div>
+                <div class="api-note">
+                    <strong>🔒 安全说明：</strong>Token 仅保存在你浏览器的 localStorage 中，不会上传到任何服务器。<br>
+                    每次 API 请求仅发送到 <code>api.github.com</code>。<br>
+                    如不放心，可随时点击「清除 Token」删除。
     <div class="container">
         <header>
             <div class="logo">
@@ -776,6 +1014,92 @@
         const GITHUB_USER = 'Hydrooxzgen';
         const API_BASE = 'https://api.github.com';
 
+        // Token management
+        function getToken() {
+            return localStorage.getItem('gh_token') || '';
+        }
+
+        function authHeaders(extra = {}) {
+            const token = getToken();
+            const headers = { ...extra };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+            return headers;
+        }
+
+        function updateSettingsIcon() {
+            const btn = document.getElementById('settingsBtn');
+            if (getToken()) {
+                btn.classList.add('has-token');
+            } else {
+                btn.classList.remove('has-token');
+            }
+        }
+
+        // Settings panel events
+        document.getElementById('settingsBtn').addEventListener('click', () => {
+            document.getElementById('tokenInput').value = getToken();
+            document.getElementById('tokenStatus').className = 'settings-status';
+            document.getElementById('tokenStatus').style.display = 'none';
+            document.getElementById('settingsOverlay').classList.add('active');
+        });
+
+        document.getElementById('settingsClose').addEventListener('click', () => {
+            document.getElementById('settingsOverlay').classList.remove('active');
+        });
+
+        document.getElementById('settingsOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) document.getElementById('settingsOverlay').classList.remove('active');
+        });
+
+        document.getElementById('tokenSave').addEventListener('click', async () => {
+            const token = document.getElementById('tokenInput').value.trim();
+            const status = document.getElementById('tokenStatus');
+            if (!token) {
+                status.className = 'settings-status error';
+                status.textContent = '请输入 Token';
+                status.style.display = 'block';
+                return;
+            }
+            // Validate token
+            try {
+                const res = await fetch(`${API_BASE}/user`, {
+                    headers: authHeaders()
+                });
+                if (res.ok) {
+                    localStorage.setItem('gh_token', token);
+                    updateSettingsIcon();
+                    status.className = 'settings-status success';
+                    status.textContent = '✅ Token 有效，已保存！';
+                    status.style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('settingsOverlay').classList.remove('active');
+                        location.reload();
+                    }, 1000);
+                } else {
+                    status.className = 'settings-status error';
+                    status.textContent = `❌ Token 无效 (${res.status})，请检查后重试`;
+                    status.style.display = 'block';
+                }
+            } catch (e) {
+                status.className = 'settings-status error';
+                status.textContent = '❌ 网络错误，请检查连接';
+                status.style.display = 'block';
+            }
+        });
+
+        document.getElementById('tokenClear').addEventListener('click', () => {
+            localStorage.removeItem('gh_token');
+            updateSettingsIcon();
+            const status = document.getElementById('tokenStatus');
+            status.className = 'settings-status success';
+            status.textContent = '✅ Token 已清除';
+            status.style.display = 'block';
+            document.getElementById('tokenInput').value = '';
+            setTimeout(() => location.reload(), 800);
+        });
+
+        updateSettingsIcon();
+
         // Language colors
         const LANG_COLORS = {
             'JavaScript': '#f1e05a', 'TypeScript': '#3178c6', 'Python': '#3572A5',
@@ -798,7 +1122,9 @@
             let page = 1;
             let repos = [];
             while (true) {
-                const res = await fetch(`${API_BASE}/users/${GITHUB_USER}/repos?per_page=100&page=${page}&sort=updated`);
+                const res = await fetch(`${API_BASE}/users/${GITHUB_USER}/repos?per_page=100&page=${page}&sort=updated`, {
+                    headers: authHeaders()
+                });
                 if (!res.ok) throw new Error(`GitHub API 错误: ${res.status}`);
                 const data = await res.json();
                 if (data.length === 0) break;
@@ -814,7 +1140,7 @@
             if (readmeCache[repoName] !== undefined) return readmeCache[repoName];
             try {
                 const res = await fetch(`${API_BASE}/repos/${GITHUB_USER}/${repoName}/readme`, {
-                    headers: { 'Accept': 'application/vnd.github.v3.raw' }
+                    headers: authHeaders({ 'Accept': 'application/vnd.github.v3.raw' })
                 });
                 if (res.ok) {
                     const text = await res.text();
