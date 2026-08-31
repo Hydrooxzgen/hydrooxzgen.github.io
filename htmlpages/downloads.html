@@ -1,203 +1,86 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>下载中心</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-        
-        header {
-            background: linear-gradient(to right, #3a7bd5, #00d2ff);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        
-        .header-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-        
-        .search-box {
-            margin: 20px auto;
-            max-width: 500px;
-            position: relative;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 50px;
-            border: none;
-            font-size: 1.1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .search-btn {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            background: #3a7bd5;
-            border: none;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .search-btn:hover {
-            background: #2c65b8;
-        }
-        
-        .download-categories {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 30px;
-            justify-content: center;
-        }
-        
-        .category-card {
-            background: white;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 550px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        
-        .category-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .category-header {
-            padding: 20px;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .system-header {
-            background: linear-gradient(to right, #ff5e62, #ff9966);
-        }
-        
-        .tools-header {
-            background: linear-gradient(to right, #3a7bd5, #00d2ff);
-        }
-        
-        .category-icon {
-            font-size: 2rem;
-        }
-        
-        .category-content {
-            padding: 25px;
-        }
-        
-        .category-content p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            background: #3a7bd5;
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(58, 123, 213, 0.3);
-        }
-        
-        .btn:hover {
-            background: #2c65b8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(58, 123, 213, 0.4);
-        }
-        
-        .system-btn {
-            background: #ff5e62;
-            box-shadow: 0 4px 10px rgba(255, 94, 98, 0.3);
-        }
-        
-        .system-btn:hover {
-            background: #e05559;
-            box-shadow: 0 6px 15px rgba(255, 94, 98, 0.4);
-        }
-        
-        .back-btn {
-            display: block;
-            width: fit-content;
-            margin: 20px auto 40px;
-            padding: 12px 30px;
-            background: #555;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-        
-        .back-btn:hover {
-            background: #333;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            border-top: 1px solid #eee;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .download-categories {
-                padding: 15px;
+    <link rel="stylesheet" href="../css/oreui.css">
+</head>
+<body>
+    <oreui-scroll-container>
+        <main>
+            <!-- 页面标题 -->
+            <oreui-page-title-area>
+                <oreui-page-title>
+                    <oreui-page-title-span>
+                        <i class="fas fa-download"></i> 下载中心
+                    </oreui-page-title-span>
+                </oreui-page-title>
+            </oreui-page-title-area>
+
+            <!-- 系统类 -->
+            <oreui-main-block-frame>
+                <oreui-main-block>
+                    <div style="padding: 10px; width: 100%; max-width: 550px;">
+                        <oreui-show-block style="width: 100%;">
+                            <oreui-show-block-title>
+                                <i class="fas fa-desktop" style="margin-right: 8px;"></i> 系统类
+                            </oreui-show-block-title>
+                            <oreui-show-block-description>
+                                操作系统相关下载
+                            </oreui-show-block-description>
+                        </oreui-show-block>
+                    </div>
+                </oreui-main-block>
+            </oreui-main-block-frame>
+
+            <oreui-main-block-spacing></oreui-main-block-spacing>
+
+            <!-- 工具类 -->
+            <oreui-main-display-frame>
+                <div style="padding: 10px; width: 100%; max-width: 550px;">
+                    <oreui-show-block style="width: 100%;">
+                        <oreui-show-block-title>
+                            <i class="fas fa-tools" style="margin-right: 8px;"></i> 工具类
+                        </oreui-show-block-title>
+                        <oreui-show-block-description>
+                            实用工具与软件
+                        </oreui-show-block-description>
+                    </oreui-show-block>
+                </div>
+            </oreui-main-display-frame>
+
+            <oreui-main-block-spacing></oreui-main-block-spacing>
+
+            <!-- Minecraft -->
+            <oreui-main-block-frame>
+                <oreui-main-block>
+                    <div style="padding: 10px; width: 100%; max-width: 550px;">
+                        <oreui-show-block style="width: 100%;">
+                            <oreui-show-block-title>
+                                <i class="fas fa-cube" style="margin-right: 8px;"></i> Minecraft
+                            </oreui-show-block-title>
+                            <oreui-show-block-description>
+                                Minecraft 相关资源
+                            </oreui-show-block-description>
+                        </oreui-show-block>
+                    </div>
+                </oreui-main-block>
+            </oreui-main-block-frame>
+
+            <oreui-main-block-spacing></oreui-main-block-spacing>
+
+            <!-- 返回按钮 -->
+            <oreui-main-block>
+                <a href="../" class="btn middle_btn normal_btn" style="margin: 8px;">
+                    <i class="fas fa-arrow-left"></i> 返回主页
+                </a>
+            </oreui-main-block>
+        </main>
+    </oreui-scroll-container>
+</body>
+</html>
             }
             
             .category-card {
